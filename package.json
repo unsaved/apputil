@@ -2,11 +2,13 @@
   "name": "@admc.com/apputil",
   "version": "1.0.0",
   "description": "Application Dev Utils",
-  "main": "AppErr.js",
+  "main": "index.js",
   "scripts": {
     "test": "node -e 'throw new (require(\"./AppErr\").AppErr)(\"msg\");'"
   },
-  "keywords": [ "Utilities" ],
+  "keywords": [
+    "Utilities"
+  ],
   "author": "Blaine Simpson <blaine.simpson@admc.com>",
   "license": "Apache 2.0",
   "homepage": "https://github.com/unsaved/apputil",
