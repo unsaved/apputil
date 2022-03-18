@@ -1,9 +1,11 @@
 {
   "name": "@admc.com/apputil",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Application Dev Utils",
   "main": "index.js",
-  "bin": { "jsShell": "jsShell.js" },
+  "bin": {
+    "jsShell": "jsShell.js"
+  },
   "scripts": {
     "test": "node -e 'throw new (require(\"./index\").AppErr)(\"msg\");'"
   },
