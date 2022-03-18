@@ -15,7 +15,7 @@ module.exports = function(wrappedFn, exitValue) {
     validate(arguments, ["function", "posint="]);
     return function() {
         try {
-            wrappedFn.apply(null, arguments);
+            return wrappedFn.apply(null, arguments);
         } catch(e) {
             if (e === null)
                 console.error("A null was thrown.  "
