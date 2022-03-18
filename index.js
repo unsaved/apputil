@@ -1,5 +1,6 @@
 "use strict";
 
 module.exports.AppErr = require("./AppErr");
-module.exports.conciseCatcher = require("./conciseCatcher");
+const appErrHandlers = require("./appErrHandlers");
+for (let key in appErrHandlers) module.exports[key] = appErrHandlers[key];
 module.exports.NetRC = require("./NetRC");

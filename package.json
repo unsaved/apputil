@@ -4,7 +4,7 @@
   "description": "Application Dev Utils",
   "main": "index.js",
   "scripts": {
-    "test": "node -e 'throw new (require(\"./AppErr\").AppErr)(\"msg\");'"
+    "test": "node -e 'throw new (require(\"./index\").AppErr)(\"msg\");'"
   },
   "keywords": [
     "Utilities"
