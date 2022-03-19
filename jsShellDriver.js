@@ -70,7 +70,7 @@ conciseCatcher(function(cmdFiles, cwd, r0, out, err, envMap) {
       "string=", "boolean=", "boolean=", "boolean=", "plainobject="]);
     const jsShells = cmdFiles.map(cmdFile =>
         new JsShell(cmdFile, JSON.parse(fs.readFileSync(cmdFile, "utf8")),
-          cwd, envMap, envMap === undefined ? undefined : true)
+          cwd, envMap, envMap === undefined ? undefined : true, process.env)
     );
     console.debug(jsShells.length + " command files validated successfully");
     jsShells.forEach(jsShell =>

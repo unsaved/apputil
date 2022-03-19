@@ -15,9 +15,9 @@ const util = require("util");
  *        then the provided map will completely replace the current env.
  */
 module.exports = class JsShell {
-    constructor(id, config, defaultCwd, env, envAdd) {
-        validate(arguments,
-          ["string", "plainobject[]", "string=", "plainobject=", "boolean="]);
+    constructor(id, config, defaultCwd, env, envAdd, substMap) {
+        validate(arguments, ["string", "plainobject[]", "string=",
+          "plainobject=", "boolean=", "object="]);
         this.id = id;
         if (envAdd !== undefined && env === undefined)
             throw new AppErr(
@@ -25,6 +25,9 @@ module.exports = class JsShell {
         if (env !== undefined) for (let key in env)
             validate(env[key], "string",
               `Env var '${key}' value not a string ${env[key]}`);
+        if (substMap !== undefined) for (let key in substMap)
+            validate(substMap[key], "string",
+              `substMap var '${key}' value not a string ${substMap[key]}`);
         config.forEach((rec,i) => {
             validate(rec, {cmd: "string[]"}, `Config record #${i+1}`);
             if (("stdout" in rec) && typeof(rec.stdout) !== "boolean")
@@ -46,6 +49,7 @@ module.exports = class JsShell {
                 throw new AppErr(`Config record ${id} #${i+1} `
                   + `has non-boolean 'stdout' value: ${rec.stdout}`);
         });
+        this.substMap = substMap;
         this.config = config;
         this.env = envAdd ? {...process.env, ...env} : env;
         this.dfltCwd = defaultCwd;
@@ -66,6 +70,7 @@ module.exports = class JsShell {
     run(dfltRequire0=false, dfltStdout=true, dfltStderr=true) {
         validate(arguments, ["boolean=", "boolean=", "boolean="]);
         this.lastExecDuration = -1;
+        const substMapRef = this.substMap;
         const startMs = new Date().valueOf();
         const configCount = this.config.length;
         this.config.forEach((rec, i) => {
@@ -91,25 +96,31 @@ stdErr ? "inherit" : "pipe",
             if (cwd !== undefined) opts.cwd = cwd;
             if (this.env !== undefined) opts.env = this.env;
             // maxBuffer?
+
             
-            const args = rec.cmd.slice();
+            const allArgs = this.substMap === undefined ? rec.cmd.slice() :
+              rec.cmd.map(function(arg) {
+                return substMapRef === undefined ? arg :
+                  arg.replace(REF_RE, refReplacement)
+              });
+            const args = allArgs.slice();
             const cmd = args.shift();
 
-            console.info(`[#${i+1}/${configCount} ${rec.cmd}]`);
+            console.info(`[#${i+1}/${configCount} ${allArgs}]`);
             console.debug(util.formatWithOptions({colors: true, depth: 0},
               "[with options %O]", opts));
             const pObj = c_p.spawnSync(cmd, args, opts); 
             if ("error" in pObj)
                 throw new AppErr("Command #%i/%i [%s] failed.\n%O",
-                  i+1, configCount, rec.cmd, pObj.error);
+                  i+1, configCount, allArgs, pObj.error);
             if (pObj.signal !== null)
                 throw new AppErr(
                   "Command #%i/%i [%s] terminated by signal %s\n%O",
-                  i+1, configCount, rec.cmd, pObj.signal);
+                  i+1, configCount, allArgs, pObj.signal);
             if (require0 && pObj.status !== 0)
                 throw new AppErr(
                   util.format("Command #%i/%i [%s] exited with value %i",
-                  i+1, configCount, rec.cmd, pObj.status)
+                  i+1, configCount, allArgs, pObj.status)
                   + (stdOut ? "" : (
                     "\nSTDOUT: ####################################\n"
                   +  pObj.stdout.toString("utf8")))
@@ -120,5 +131,15 @@ stdErr ? "inherit" : "pipe",
         });
         this.lastExecDuration = new Date().valueOf() - startMs;
         return this;
+
+        function refReplacement (m, p1) {
+            //console.log("substMapRef", substMapRef);
+            if (!(p1 in substMapRef))
+                throw new AppErr(`A cmd values has orphaned reference '${m}'`);
+            console.log("RETURNING " + substMapRef[p1]);
+            return substMapRef[p1];
+        }
     }
 };
+
+const REF_RE = /[$]{([^}]+)}/g;

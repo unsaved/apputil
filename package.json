@@ -7,7 +7,8 @@
     "jsShell": "jsShell.js"
   },
   "scripts": {
-    "test": "node -e 'throw new (require(\"./index\").AppErr)(\"msg\");'"
+    "test": "node -e 'throw new (require(\"./index\").AppErr)(\"msg\");'",
+    "unixJsShell": "node jsShellDriver.js testdata/cmdTest.json"
   },
   "keywords": [
     "Utilities"
