@@ -48,7 +48,7 @@ Command files are JSON of lists of objects with these elements:
   }).
   alias("help", "h").
   demandCommand(1).
-  version("1.0.0");
+  version("1.2.8");
 const yargsDict = yargs.argv;
 const progName = yargsDict.$0.replace(/^.*[\\/]/, "");
 
