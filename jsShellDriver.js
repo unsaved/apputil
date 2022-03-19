@@ -8,7 +8,7 @@ const { validate } = require("bycontract-plus");
 
 const yargs = require("yargs")(process.argv.slice(2)).
   strictOptions().
-  usage(`SYNTAX: $0 [-dehoqvz] [-m name=val] [-f folder] -- cmds.json...
+  usage(`SYNTAX: $0 [-dEhOqvz] [-m name=val] [-f folder] -- cmds.json...
 Command files are JSON of lists of objects with these elements:
     cmd:         [An argv list],  REQUIRED
     cwd:         directory,       OPTIONAL
