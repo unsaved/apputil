@@ -48,6 +48,9 @@ module.exports = class JsShell {
             if (("stdout" in rec) && typeof(rec.stdout) !== "boolean")
                 throw new AppErr(`Config record ${id} #${i+1} `
                   + `has non-boolean 'stdout' value: ${rec.stdout}`);
+            if (("label" in rec) && typeof(rec.label) !== "string")
+                throw new AppErr(`Config record ${id} #${i+1} `
+                  + `has non-string 'label' value: ${rec.label}`);
         });
         this.substMap = substMap;
         this.config = config;
@@ -78,12 +81,6 @@ module.exports = class JsShell {
             const stdErr = ("stderr" in rec) ? rec.stderr : dfltStderr;
             const cwd = ("cwd" in rec) ? rec.cwd : this.dfltCwd;
             const require0 = ("require0" in rec) ? rec.require0 : dfltRequire0;
-console.warn("Opts", {
-stdio: [
-(rec.interactive ? "inherit" : "ignore"),
-stdOut ? "inherit" : "pipe",
-stdErr ? "inherit" : "pipe",
-],});
             const opts = {
               stdio: [
                 (rec.interactive ? "inherit" : "ignore"),
@@ -105,19 +102,42 @@ stdErr ? "inherit" : "pipe",
               });
             const args = allArgs.slice();
             const cmd = args.shift();
+            const label = rec.label === undefined ? undefined :
+              (this.substMap === undefined ? rec.label :
+              rec.label.replace(REF_RE, refReplacement));
 
-            console.info(`[#${i+1}/${configCount} ${allArgs}]`);
+            console.info(`[#${i+1}/${configCount} ${label ? label : allArgs}]`);
             console.debug(util.formatWithOptions({colors: true, depth: 0},
               "[with options %O]", opts));
             const pObj = c_p.spawnSync(cmd, args, opts); 
-            if ("error" in pObj)
+            if ("error" in pObj) {
+                if (label)
+                    throw new AppErr("Command #%i/%i '%s' failed.\n%s\n%O",
+                      i+1, configCount, label, allArgs, pObj.error);
                 throw new AppErr("Command #%i/%i [%s] failed.\n%O",
                   i+1, configCount, allArgs, pObj.error);
-            if (pObj.signal !== null)
+            }
+            if (pObj.signal !== null) {
+                if (label)
+                    throw new AppErr(
+                      "Command #%i/%i '%s' terminated by signal %s\n%s\n%O",
+                      i+1, configCount, label, allArgs, pObj.signal);
                 throw new AppErr(
                   "Command #%i/%i [%s] terminated by signal %s\n%O",
                   i+1, configCount, allArgs, pObj.signal);
-            if (require0 && pObj.status !== 0)
+            }
+            if (require0 && pObj.status !== 0) {
+                if (label)
+                    throw new AppErr(
+                      util.format("Command #%i/%i '%s' exited with value %i\n%s",
+                      i+1, configCount, label, allArgs, pObj.status)
+                      + (stdOut ? "" : (
+                        "\nSTDOUT: ####################################\n"
+                      +  pObj.stdout.toString("utf8")))
+                      + (stdErr ? "" : (
+                        "\nSTDERR: ####################################\n"
+                      +  pObj.stderr.toString("utf8")))
+                    );
                 throw new AppErr(
                   util.format("Command #%i/%i [%s] exited with value %i",
                   i+1, configCount, allArgs, pObj.status)
@@ -128,6 +148,7 @@ stdErr ? "inherit" : "pipe",
                     "\nSTDERR: ####################################\n"
                   +  pObj.stderr.toString("utf8")))
                 );
+            }
         });
         this.lastExecDuration = new Date().valueOf() - startMs;
         return this;
@@ -136,7 +157,6 @@ stdErr ? "inherit" : "pipe",
             //console.log("substMapRef", substMapRef);
             if (!(p1 in substMapRef))
                 throw new AppErr(`A cmd values has orphaned reference '${m}'`);
-            console.log("RETURNING " + substMapRef[p1]);
             return substMapRef[p1];
         }
     }

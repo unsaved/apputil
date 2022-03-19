@@ -1,4 +1,4 @@
 [
-  { "cmd": ["pwd"] },
+  { "label": "Present Directory", "cmd": ["pwd"] },
   { "cmd": ["echo", "(${HOME})"] }
 ]
