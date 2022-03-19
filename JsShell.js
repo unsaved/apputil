@@ -120,17 +120,17 @@ module.exports = class JsShell {
             if (pObj.signal !== null) {
                 if (label)
                     throw new AppErr(
-                      "Command #%i/%i '%s' terminated by signal %s\n%s\n%O",
-                      i+1, configCount, label, allArgs, pObj.signal);
+                      "Command #%i/%i '%s' terminated by signal %s\n%s",
+                      i+1, configCount, label, pObj.signal, allArgs);
                 throw new AppErr(
-                  "Command #%i/%i [%s] terminated by signal %s\n%O",
+                  "Command #%i/%i [%s] terminated by signal %s",
                   i+1, configCount, allArgs, pObj.signal);
             }
             if (require0 && pObj.status !== 0) {
                 if (label)
                     throw new AppErr(
                       util.format("Command #%i/%i '%s' exited with value %i\n%s",
-                      i+1, configCount, label, allArgs, pObj.status)
+                      i+1, configCount, label, pObj.status, allArgs)
                       + (stdOut ? "" : (
                         "\nSTDOUT: ####################################\n"
                       +  pObj.stdout.toString("utf8")))
