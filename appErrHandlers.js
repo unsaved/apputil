@@ -1,6 +1,6 @@
 "use strict";
 
-const { validate } = require("bycontract-plus");
+const { validate } = require("@admc.com/bycontract-plus");
 
 /**
  * This encapsulates handling of expected exceptions in a way that supports

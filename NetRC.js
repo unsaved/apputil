@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const { AppErr } = require("./AppErr");
-const { validate } = require("bycontract-plus");
+const { validate } = require("@admc.com/bycontract-plus");
 
 // JavaScript doesn't allow for class static constants, so:
 const URL_RE = /^[^:]+:[/]+([\w.-]+)/;

@@ -19,5 +19,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/unsaved/apputil.git"
+  },
+  "dependencies": {
+    "@admc.com/bycontract-plus": "^1.2.1"
   }
 }

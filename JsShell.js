@@ -1,6 +1,6 @@
 "use strict";
 
-const { validate } = require("bycontract-plus");
+const { validate } = require("@admc.com/bycontract-plus");
 const c_p = require("child_process");
 const AppErr = require("./AppErr");
 const util = require("util");
