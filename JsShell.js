@@ -42,6 +42,9 @@ module.exports = class JsShell {
             if (("interactive" in rec) && typeof(rec.interactive) !== "boolean")
                 throw new AppErr(`Config record ${id} #${i+1} `
                   + `has non-boolean 'interactive' value: ${rec.interactive}`);
+            if (("condition" in rec) && typeof(rec.condition) !== "string")
+                throw new AppErr(`Config record ${id} #${i+1} `
+                  + `has non-string 'condition' value: ${rec.condition}`);
             if (("cwd" in rec) && typeof(rec.cwd) !== "string")
                 throw new AppErr(`Config record ${id} #${i+1} `
                   + `has non-string 'cwd' value: ${rec.cwd}`);
@@ -90,6 +93,8 @@ module.exports = class JsShell {
               windowsVerbatimArguments: true,  // ignored on UNIX
               //windowsHide: true,  // TODO: TEST THIS OUT for terminal and graphical programs
             };
+            const condFn = ("condition" in rec) ?
+                function() { return eval(rec.condition) } : undefined;
             if (cwd !== undefined) opts.cwd = cwd;
             if (this.env !== undefined) opts.env = this.env;
             // maxBuffer?
@@ -109,6 +114,23 @@ module.exports = class JsShell {
             console.info(`[#${i+1}/${configCount} ${label ? label : allArgs}]`);
             console.debug(util.formatWithOptions({colors: true, depth: 0},
               "[with options %O]", opts));
+            if (condFn !== undefined) {
+                let condReturn;
+                try {
+                    condReturn  = condFn();
+                } catch(ie) {
+                    throw new AppErr("condition execution threw", ie.message);
+                }
+                if (typeof(condReturn) !== "boolean")
+                    throw new AppErr("condition expression returned a "
+                      + "%s rather than a boolean: %s", typeof(condReturn),
+                      rec.condition);
+                if (!condReturn) {
+                    console.info(`#${i+1}/${configCount} Skipping `
+                      + `'${label ? label : allArgs}' due to condition`);
+                    return;
+                }
+            }
             const pObj = c_p.spawnSync(cmd, args, opts); 
             if ("error" in pObj) {
                 if (label)

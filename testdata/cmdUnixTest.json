@@ -1,0 +1,14 @@
+[
+  { "label": "Present Directory", "cmd": ["pwd"] },
+  { "cmd": ["echo", "(${HOME})"] },
+  {
+    "label": "Windows-only",
+    "cmd": ["echo", "Now on Windows"],
+    "condition": "process.platform === 'win32'"
+  },
+  {
+    "label": "Non-Windows-only",
+    "cmd": ["echo", "Now on Non-Windows"],
+    "condition": "process.platform !== 'win32'"
+  }
+]

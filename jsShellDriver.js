@@ -9,12 +9,13 @@ const yargs = require("yargs")(process.argv.slice(2)).
   strictOptions().
   usage(`SYNTAX: $0 [-dEhOqvz] [-m name=val] [-f folder] -- cmds.json...
 Command files are JSON of lists of objects with these elements:
-    label:       strng       OPTIONAL
+    label:       string      OPTIONAL
     cmd:         [An argv list]  REQUIRED
     cwd:         directory       OPTIONAL
     require0:    boolean     OPTIONAL  (require 0 exit values)
     stdOut:      boolean     OPTIONAL  (display stdout)
     stdErr:      boolean     OPTIONAL  (display stderr)
+    condition:   string      OPTIONAL  (JS code that evaluates to true or false)
     interactive: boolean     OPTIONAL  (allow interactive input)`.
       replace(/ /g, "\u2009")).
   option("v", { describe: "Verbose", type: "boolean", }).

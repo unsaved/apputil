@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "node -e 'throw new (require(\"./index\").AppErr)(\"msg\");'",
-    "unixJsShell": "node jsShellDriver.js testdata/cmdTest.json"
+    "unixJsShell": "node jsShellDriver.js -q testdata/cmdTest.json",
+    "winJsShell": "node jsShellDriver.js testdata/cmdTest.json"
   },
   "keywords": [
     "Utilities"
