@@ -1,9 +1,9 @@
 [
-  { "label": "Present Directory", "cmd": ["cd"] },
-  { "cmd": ["echo", "(%HOMEDRIVE%%HOMEPATH%)"] },
+  { "label": "whoami?", "cmd": ["whoami"] },
+  { "cmd": ["cmd" , "/c", "echo (%HOMEDRIVE%%HOMEPATH%)"] },
   {
     "label": "Windows-only",
-    "cmd": ["echo", "Now on Windows"],
+    "cmd": ["cmd" , "/c", "echo Now on Windows"],
     "condition": "process.platform === 'win32'"
   },
   {

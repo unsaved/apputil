@@ -1,5 +1,5 @@
 [
-  { "label": "Present Directory", "cmd": ["pwd"] },
+  { "label": "whoami?", "cmd": ["whoami"] },
   { "cmd": ["echo", "(${HOME})"] },
   {
     "label": "Windows-only",
