@@ -29,12 +29,12 @@ Command files are JSON of lists of objects with these elements:
   }).
   option("f", {
       describe: "default current working Folder for executions",
-      type: "sting",
+      type: "string",
       requiresArg: true,
   }).
   option("m", {
       describe: "specify one var to add to env var Map.  (Only one supported).",
-      type: "sting",
+      type: "string",
       requiresArg: true,
   }).
   option("O", {
