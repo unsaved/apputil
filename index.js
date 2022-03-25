@@ -8,3 +8,6 @@ module.exports.JsShell = require("./JsShell");
 module.exports.appVersion = JSON.parse(
   require("fs").readFileSync(require("path").join(__dirname, "package.json"))).
   version;
+module.exports.isPlainObject = val =>
+  typeof(val) === "object" && val !== null &&
+    Object.getPrototypeOf(val) === Object.getPrototypeOf({});
