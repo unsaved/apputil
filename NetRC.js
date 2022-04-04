@@ -37,7 +37,7 @@ module.exports = class NetRC {
         const rcContent = fs.readFileSync(this.file, "utf8").
           replace(/^\s*#.*$/gm, "");
         ex = new RegExp("(?:^|\\s)(machine\\s+" + hostname
-          + "\\s[\\s\\S]*?)\\s(?:default|machine)\\s").
+          + "\\s[\\s\\S]*?)\\s(?:default\\s|machine\\s|$)").
           exec(rcContent);
         if (!ex) ex = DEFAULT_STANZA_RE.exec(rcContent);
         if (!ex) throw new AppErr(
