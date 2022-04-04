@@ -1,7 +1,7 @@
 "use strict";
 
 const fs = require("fs");
-const { AppErr } = require("./AppErr");
+const AppErr = require("./AppErr");
 const { validate } = require("@admc.com/bycontract-plus");
 
 // JavaScript doesn't allow for class static constants, so:
