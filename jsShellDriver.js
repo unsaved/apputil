@@ -2,7 +2,7 @@
 
 "use strict";
 const fs = require("fs");
-const { conciseCatcher, JsShell, appVersion } = require("./index.js");
+const { conciseCatcher, JsShell, getAppVersion } = require("./index.js");
 const { validate } = require("@admc.com/bycontract-plus");
 
 const yargs = require("yargs")(process.argv.slice(2)).
@@ -48,7 +48,7 @@ Command files are JSON of lists of objects with these elements:
   }).
   alias("help", "h").
   demandCommand(1).
-  version(appVersion);
+  version(getAppVersion(__dirname));
 const yargsDict = yargs.argv;
 const progName = yargsDict.$0.replace(/^.*[\\/]/, "");
 
