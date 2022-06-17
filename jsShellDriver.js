@@ -50,7 +50,7 @@ Command files are JSON of lists of objects with these elements:
   demandCommand(1).
   version(getAppVersion(__dirname));
 const yargsDict = yargs.argv;
-const progName = yargsDict.$0.replace(/^.*[\\/]/, "");
+const progName = yargsDict.$0.replace(/^.*[\\/]/, "");  // eslint-disable-line no-unused-vars
 
 if (!yargsDict.d) console.debug = () => {};
 if (yargsDict.q) console.debug = console.log = console.info = () => {};
@@ -58,7 +58,7 @@ if (yargsDict.q) console.debug = console.log = console.info = () => {};
 let eMap;
 if ("m" in yargsDict) {
     const ex = /^(\w+)=(.+)$/.exec(yargsDict.m);
-    if (!exec) {
+    if (!ex) {
         console.error("-m value must be of format NAME=VALUE.  Maybe you need quotes.");
         yargs.showHelp();
         process.exit(9);

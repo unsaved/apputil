@@ -8,4 +8,4 @@ module.exports = class AppErr extends Error {
         super(require("util").format.apply(null, arguments));
         this.name = "AppErr";
     }
-}
+};

@@ -7,6 +7,7 @@
     "jsShell": "jsShell.js"
   },
   "scripts": {
+    "lint": "eslint .",
     "test": "node -e 'throw new (require(\"./index\").AppErr)(\"msg\");'",
     "unixJsShell": "node jsShellDriver.js -q testdata/cmdUnix.json",
     "winJsShell": "node jsShellDriver.js -q testdata/cmdWin.json"
@@ -23,5 +24,8 @@
   },
   "dependencies": {
     "@admc.com/bycontract-plus": "^1.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.17.0"
   }
 }

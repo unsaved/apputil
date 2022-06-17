@@ -69,4 +69,4 @@ module.exports.conciseErrorHandler = function(e, exitValue) {
         // more often, this is acceptable.
         console.error(e.stack);
     if (exitValue !== undefined) process.exit(exitValue);
-}
+};

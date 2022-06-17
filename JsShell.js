@@ -1,9 +1,11 @@
 "use strict";
 
 const { validate } = require("@admc.com/bycontract-plus");
-const c_p = require("child_process");
+const childProcess = require("child_process");
 const AppErr = require("./AppErr");
 const util = require("util");
+
+const REF_RE = /[$]{([^}]+)}/g;
 
 /**
  * Executes external programs, like an OS shell, without conveniences like
@@ -22,10 +24,10 @@ module.exports = class JsShell {
         if (envAdd !== undefined && env === undefined)
             throw new AppErr(
               "Config record specifies 'envAdd' but gives no 'env' map");
-        if (env !== undefined) for (let key in env)
+        if (env !== undefined) for (const key in env)
             validate(env[key], "string",
               `Env var '${key}' value not a string ${env[key]}`);
-        if (substMap !== undefined) for (let key in substMap)
+        if (substMap !== undefined) for (const key in substMap)
             validate(substMap[key], "string",
               `substMap var '${key}' value not a string ${substMap[key]}`);
         config.forEach((rec,i) => {
@@ -94,21 +96,22 @@ module.exports = class JsShell {
               //windowsHide: true,  // TODO: TEST THIS OUT for terminal and graphical programs
             };
             const condFn = ("condition" in rec) ?
-                function() { return eval(rec.condition) } : undefined;
+                function() { return eval(rec.condition); } : undefined;
             if (cwd !== undefined) opts.cwd = cwd;
             if (this.env !== undefined) opts.env = this.env;
             // maxBuffer?
 
-            
+
             const allArgs = this.substMap === undefined ? rec.cmd.slice() :
               rec.cmd.map(function(arg) {
                 return substMapRef === undefined ? arg :
-                  arg.replace(REF_RE, refReplacement)
+                  arg.replace(REF_RE, refReplacement);  // eslint-disable-line no-use-before-define
               });
             const args = allArgs.slice();
             const cmd = args.shift();
             const label = rec.label === undefined ? undefined :
               (this.substMap === undefined ? rec.label :
+              // eslint-disable-next-line no-use-before-define
               rec.label.replace(REF_RE, refReplacement));
 
             console.info(`[#${i+1}/${configCount} ${label ? label : allArgs}]`);
@@ -131,7 +134,7 @@ module.exports = class JsShell {
                     return;
                 }
             }
-            const pObj = c_p.spawnSync(cmd, args, opts); 
+            const pObj = childProcess.spawnSync(cmd, args, opts);
             if ("error" in pObj) {
                 if (label)
                     throw new AppErr("Command #%i/%i '%s' failed.\n%s\n%O",
@@ -183,5 +186,3 @@ module.exports = class JsShell {
         }
     }
 };
-
-const REF_RE = /[$]{([^}]+)}/g;
