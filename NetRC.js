@@ -43,7 +43,8 @@ module.exports = class NetRC {
             `No login setting for '${hostname}' stanza in '${this.file}' file`);
         const u = ex[1];
         ex = PASSWORD_RE.exec(rcStanza);
-        if (!ex) throw new AppErr("No password setting " + `for '${hostname}' stanza in '${this.file}' file`);
+        if (!ex) throw new AppErr(
+          "No password setting " + `for '${hostname}' stanza in '${this.file}' file`);
         const p = ex[1];
         return { username: u, password: p };
     }
