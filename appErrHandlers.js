@@ -18,17 +18,14 @@ module.exports.conciseCatcher = function(wrappedFn, exitValue) {
             return wrappedFn.apply(null, arguments);
         } catch(e) {
             if (e === null)
-                console.error("A null was thrown.  "
-                  + "Try using 'node --trace-uncaught' "
+                console.error("A null was thrown.  Try using 'node --trace-uncaught' "
                   + "if you need the stack trace");
             else if (typeof(e) !== "object")
                 console.error(`A ${typeof(e)} (non-object) was thrown.  `
-                  + "Try using 'node --trace-uncaught' "
-                  + "if you need the stack trace");
+                  + "Try using 'node --trace-uncaught' if you need the stack trace");
             else if (!("stack" in e))
                 console.error(`An object with no stack was thrown.  `
-                  + "Try using 'node --trace-uncaught' "
-                  + "if you need the stack trace");
+                  + "Try using 'node --trace-uncaught' if you need the stack trace");
             else if (e.name === "AppErr")
                 console.error("Aborting.  " + e.message);
             else
@@ -51,16 +48,13 @@ module.exports.conciseErrorHandler = function(e, exitValue) {
     validate(arguments, ["*", "posint="]);
     if (e === null)
         console.error("A null was thrown.  "
-          + "Try using 'node --trace-uncaught' "
-          + "if you need the stack trace");
+          + "Try using 'node --trace-uncaught' if you need the stack trace");
     else if (typeof(e) !== "object")
         console.error(`A ${typeof(e)} (non-object) was thrown.  `
-          + "Try using 'node --trace-uncaught' "
-          + "if you need the stack trace");
+          + "Try using 'node --trace-uncaught' if you need the stack trace");
     else if (!("stack" in e))
         console.error(`An object with no stack was thrown.  `
-          + "Try using 'node --trace-uncaught' "
-          + "if you need the stack trace");
+          + "Try using 'node --trace-uncaught' if you need the stack trace");
     else if (e.name === "AppErr")
         console.error("Aborting.  " + e.message);
     else

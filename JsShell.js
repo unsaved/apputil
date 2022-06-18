@@ -22,11 +22,9 @@ module.exports = class JsShell {
           "plainobject=", "boolean=", "object="]);
         this.id = id;
         if (envAdd !== undefined && env === undefined)
-            throw new AppErr(
-              "Config record specifies 'envAdd' but gives no 'env' map");
+            throw new AppErr("Config record specifies 'envAdd' but gives no 'env' map");
         if (env !== undefined) for (const key in env)
-            validate(env[key], "string",
-              `Env var '${key}' value not a string ${env[key]}`);
+            validate(env[key], "string", `Env var '${key}' value not a string ${env[key]}`);
         if (substMap !== undefined) for (const key in substMap)
             validate(substMap[key], "string",
               `substMap var '${key}' value not a string ${substMap[key]}`);
@@ -126,8 +124,7 @@ module.exports = class JsShell {
                 }
                 if (typeof(condReturn) !== "boolean")
                     throw new AppErr("condition expression returned a "
-                      + "%s rather than a boolean: %s", typeof(condReturn),
-                      rec.condition);
+                      + "%s rather than a boolean: %s", typeof(condReturn), rec.condition);
                 if (!condReturn) {
                     console.info(`#${i+1}/${configCount} Skipping `
                       + `'${label ? label : allArgs}' due to condition`);
@@ -144,11 +141,9 @@ module.exports = class JsShell {
             }
             if (pObj.signal !== null) {
                 if (label)
-                    throw new AppErr(
-                      "Command #%i/%i '%s' terminated by signal %s\n%s",
+                    throw new AppErr("Command #%i/%i '%s' terminated by signal %s\n%s",
                       i+1, configCount, label, pObj.signal, allArgs);
-                throw new AppErr(
-                  "Command #%i/%i [%s] terminated by signal %s",
+                throw new AppErr("Command #%i/%i [%s] terminated by signal %s",
                   i+1, configCount, allArgs, pObj.signal);
             }
             if (require0 && pObj.status !== 0) {
@@ -156,21 +151,17 @@ module.exports = class JsShell {
                     throw new AppErr(
                       util.format("Command #%i/%i '%s' exited with value %i\n%s",
                       i+1, configCount, label, pObj.status, allArgs)
-                      + (stdOut ? "" : (
-                        "\nSTDOUT: ####################################\n"
+                      + (stdOut ? "" : ( "\nSTDOUT: ####################################\n"
                       +  pObj.stdout.toString("utf8")))
-                      + (stdErr ? "" : (
-                        "\nSTDERR: ####################################\n"
+                      + (stdErr ? "" : ( "\nSTDERR: ####################################\n"
                       +  pObj.stderr.toString("utf8")))
                     );
                 throw new AppErr(
                   util.format("Command #%i/%i [%s] exited with value %i",
                   i+1, configCount, allArgs, pObj.status)
-                  + (stdOut ? "" : (
-                    "\nSTDOUT: ####################################\n"
+                  + (stdOut ? "" : ( "\nSTDOUT: ####################################\n"
                   +  pObj.stdout.toString("utf8")))
-                  + (stdErr ? "" : (
-                    "\nSTDERR: ####################################\n"
+                  + (stdErr ? "" : ( "\nSTDERR: ####################################\n"
                   +  pObj.stderr.toString("utf8")))
                 );
             }
