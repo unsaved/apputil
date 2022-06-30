@@ -73,9 +73,9 @@ conciseCatcher(function(cmdFiles, cwd, r0, out, err, envMap) {
         new JsShell(cmdFile, JSON.parse(fs.readFileSync(cmdFile, "utf8")),
           cwd, envMap, envMap === undefined ? undefined : true, process.env)
     );
-    console.debug(jsShells.length + " command files validated successfully");
-    jsShells.forEach(jsShell =>
+    console.debug(`${jsShells.length} command files validated successfully`);
+    jsShells.forEach(jsShell => {
         console.info("%s took %s s.", jsShell.id,
-            (jsShell.run(r0, out, err).lastExecDuration/1000).toFixed(3))
-    );
+            (jsShell.run(r0, out, err).lastExecDuration/1000).toFixed(3));
+    });
 })(yargsDict._, yargsDict.f, yargsDict.z, !yargsDict.O, !yargsDict.E, eMap);

@@ -16,24 +16,25 @@ module.exports.conciseCatcher = function(wrappedFn, exitValue) {
     return function() {
         try {
             return wrappedFn.apply(null, arguments);
-        } catch(e) {
+        } catch (e) {
             if (e === null)
                 console.error("A null was thrown.  Try using 'node --trace-uncaught' "
                   + "if you need the stack trace");
-            else if (typeof(e) !== "object")
-                console.error(`A ${typeof(e)} (non-object) was thrown.  `
+            else if (typeof e !== "object")
+                console.error(`A ${typeof e} (non-object) was thrown.  `
                   + "Try using 'node --trace-uncaught' if you need the stack trace");
             else if (!("stack" in e))
                 console.error(`An object with no stack was thrown.  `
                   + "Try using 'node --trace-uncaught' if you need the stack trace");
             else if (e.name === "AppErr")
-                console.error("Aborting.  " + e.message);
+                console.error(`Aborting.  ${e.message}`);
             else
                 // Weakness here is that you lose OOTB display of the actual
                 // source line of code.  Since AppErr will be thrown far
                 // more often, this is acceptable.
                 console.error(e.stack);
             if (exitValue !== undefined) process.exit(exitValue);
+            return undefined;
         }
     };
 };
@@ -49,14 +50,14 @@ module.exports.conciseErrorHandler = function(e, exitValue) {
     if (e === null)
         console.error("A null was thrown.  "
           + "Try using 'node --trace-uncaught' if you need the stack trace");
-    else if (typeof(e) !== "object")
-        console.error(`A ${typeof(e)} (non-object) was thrown.  `
+    else if (typeof e !== "object")
+        console.error(`A ${typeof e} (non-object) was thrown.  `
           + "Try using 'node --trace-uncaught' if you need the stack trace");
     else if (!("stack" in e))
         console.error(`An object with no stack was thrown.  `
           + "Try using 'node --trace-uncaught' if you need the stack trace");
     else if (e.name === "AppErr")
-        console.error("Aborting.  " + e.message);
+        console.error(`Aborting.  ${e.message}`);
     else
         // Weakness here is that you lose OOTB display of the actual
         // source line of code.  Since AppErr will be thrown far

@@ -12,5 +12,5 @@ module.exports.getAppVersion = dirName => {
       require("fs").readFileSync(require("path").join(dirName, "package.json"))).version;
 };
 module.exports.isPlainObject = val =>
-  typeof(val) === "object" && val !== null &&
+  typeof val === "object" && val !== null &&
     Object.getPrototypeOf(val) === Object.getPrototypeOf({});

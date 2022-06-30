@@ -22,8 +22,8 @@ module.exports = class NetRC {
             throw new AppErr("No regular file '.netrc' or '_netrc' in your home directory");
         try {
             fs.accessSync(this.file, fs.constants.R_OK);
-        } catch(nestedE) {
-            throw new AppErr("Can't read netrc file:", this.file);
+        } catch (nestedE) {
+            throw new AppErr(`Can't read netrc file: ${this.file}`);
         }
     }
     getAuthSettings(urlString) {
@@ -32,6 +32,7 @@ module.exports = class NetRC {
         if (!ex) throw new AppErr("URL malformatted:", urlString);
         const hostname = ex[1];
         const rcContent = fs.readFileSync(this.file, "utf8").replace(/^\s*#.*$/gm, "");
+        // eslint-disable-next-line prefer-template
         ex = new RegExp("(?:^|\\s)(machine\\s+" + hostname
           + "\\s[\\s\\S]*?)\\s(?:default\\s|machine\\s|$)").exec(rcContent);
         if (!ex) ex = DEFAULT_STANZA_RE.exec(rcContent);
@@ -44,7 +45,7 @@ module.exports = class NetRC {
         const u = ex[1];
         ex = PASSWORD_RE.exec(rcStanza);
         if (!ex) throw new AppErr(
-          "No password setting " + `for '${hostname}' stanza in '${this.file}' file`);
+          `No password setting for '${hostname}' stanza in '${this.file}' file`);
         const p = ex[1];
         return { username: u, password: p };
     }
