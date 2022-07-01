@@ -1,6 +1,6 @@
 {
   "name": "@admc.com/apputil",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "Application Dev Utils",
   "main": "index.js",
   "bin": {
