@@ -24,7 +24,8 @@
     "url": "https://github.com/unsaved/apputil.git"
   },
   "dependencies": {
-    "@admc.com/bycontract-plus": "^1.2.1"
+    "@admc.com/bycontract-plus": "^1.2.1",
+    "yargs": "^17.5.1"
   },
   "devDependencies": {
     "eslint": "^8.17.0"
