@@ -19,7 +19,8 @@ module.exports.isPlainObject = val =>
 module.exports.YMD_RE = /^(\d{4})-([01]\d)-([0-3]\d)$/;
 
 /*
- * Generate a Date for a date for local midnight.
+ * Generate a Date from a string, and IF the string is a proper date in strict format
+ * (see @param below) then set time to local midnight of that day.
  *
  * OOTB when you instantiate a Date without specifying a time you get a midnig UTC time.
  * (In some contexts you may get a date/time midnight of the NEXT day!)
@@ -27,7 +28,7 @@ module.exports.YMD_RE = /^(\d{4})-([01]\d)-([0-3]\d)$/;
  * @param yyyy-mm-dd date string.
  */
 module.exports.mkDate = s => {
-    validate([s], ["strictdatestr"]);
+    validate([s], ["string"]);
     const ymdEx = module.exports.YMD_RE.exec(s);
     if (!ymdEx) return new Date(s);
     const newDate = new Date(0);
