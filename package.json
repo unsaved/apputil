@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint",
     "lintHtml": "eslint -f html -o local/eslint.html",
-    "test": "node -e 'throw new (require(\"./index\").AppErr)(\"msg\");'",
+    "test": "mocha",
     "unixJsShell": "node jsShellDriver.js -q testdata/cmdUnix.json",
     "winJsShell": "node jsShellDriver.js -q testdata/cmdWin.json"
   },
@@ -28,6 +28,7 @@
     "yargs": "^17.5.1"
   },
   "devDependencies": {
-    "eslint": "^8.17.0"
+    "eslint": "^8.17.0",
+    "mocha": "^10.2.0"
   }
 }
