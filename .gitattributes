@@ -1,18 +1,19 @@
 * text=auto
 
-*.bash eol=lf
-*.sh eol=lf
-*.ksh eol=lf
-*.csh eol=lf
-*.pem eol=lf
-*.cmd eol=crlf
-*.bat eol=crlf
-*.BAT eol=crlf
-*.CMD eol=crlf
-*.dsp eol=crlf
-*.sln eol=crlf
-*.vcproj eol=crlf
-*.reg eol=crlf
+*.ps1 text eol=lf
+*.bash text eol=lf
+*.sh text eol=lf
+*.ksh text eol=lf
+*.csh text eol=lf
+*.pem text eol=lf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.BAT text eol=crlf
+*.CMD text eol=crlf
+*.dsp text eol=crlf
+*.sln text eol=crlf
+*.vcproj text eol=crlf
+*.reg text eol=crlf
 
 *.PNG -text
 *.png -text
@@ -98,6 +99,8 @@ makefile text
 *.shtml text
 *.htm text
 *.js text
+*.cjs text
+*.mjs text
 *.jsm text
 *.sql text
 *.isq text
