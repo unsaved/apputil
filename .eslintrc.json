@@ -2,7 +2,7 @@
 {
   "env": { "es2022": true, "node": true },
   "extends": "eslint:recommended",
-  "parserOptions": { "ecmaVersion": "latest" },
+  "parserOptions": { "ecmaVersion": "latest", "sourceType": "module" },
   "rules": {
     "camelcase": ["warn", { "properties": "never" }],
     "eqeqeq": "error",
@@ -76,5 +76,17 @@
     "no-whitespace-before-property": "error",
     "padded-blocks": ["error", "never"],
     "rest-spread-spacing": "error"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.cjs"],
+      "parserOptions": { "ecmaVersion": "latest", "sourceType": "script" }
+    }, {
+      "files": ["test/**/*.js"],
+      "globals": {
+        "it": "readonly",
+        "describe": "readonly"
+      }
+    }
+  ]
 }

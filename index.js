@@ -25,16 +25,24 @@ module.exports.YMD_RE = /^(\d{4})-([01]\d)-([0-3]\d)$/;
  * OOTB when you instantiate a Date without specifying a time you get a midnig UTC time.
  * (In some contexts you may get a date/time midnight of the NEXT day!)
  *
- * @param yyyy-mm-dd date string.
+ * @param str string, either yyyy-mm-dd (with special local-midnight-handling) or
+ *        any other string accepted by the native Date constructor.
+ * @param h hour offset, optional integer
+ * @param m hour offset, optional integer
+ * @param s hour offset, optional integer
  */
-module.exports.mkDate = s => {
-    validate([s], ["string"]);
-    const ymdEx = module.exports.YMD_RE.exec(s);
-    if (!ymdEx) return new Date(s);
-    const newDate = new Date(0);
-    newDate.setFullYear(parseInt(ymdEx[1]), parseInt(ymdEx[2] - 1), parseInt(ymdEx[3]));
-    newDate.setHours(0);  // work-around for issue mentioned in function JSDoc above
-    return newDate;
+module.exports.mkDate = (str, h=0, m=0, s=0) => {
+    validate([str, h, m, s], ["string", "int", "int", "int"]);
+    const ymdEx = module.exports.YMD_RE.exec(str);
+    let newDate;
+    if (ymdEx) {
+        newDate = new Date(0);
+        newDate.setFullYear(parseInt(ymdEx[1]), parseInt(ymdEx[2] - 1), parseInt(ymdEx[3]));
+        newDate.setHours(0);  // work-around for issue mentioned in function JSDoc above
+    } else {
+        newDate = new Date(str);
+    }
+    return h || m || s ? new Date(newDate.getTime() + h*60*60*1000 + m*60*1000 + s*1000) : newDate;
 };
 
 module.exports.plusify = (n, decimals) => {
@@ -45,4 +53,18 @@ module.exports.plusify = (n, decimals) => {
     if (!ex) return str + "." + "0".repeat(decimals);  // eslint-disable-line prefer-template
     if (ex[1].length === decimals) return str;
     return str + "0".repeat(decimals - ex[1].length);  // eslint-disable-line prefer-template
+};
+
+/*
+ * Clone a date with specified hour, minute, second offsets (or no offsets).
+ *
+ * @param date Date
+ * @param h hour offset, optional integer
+ * @param m hour offset, optional integer
+ * @param s hour offset, optional integer
+ */
+module.exports.offsetDate = (date, h=0, m=0, s=0) => {
+    validate([date, h, m, s], ["date", "int", "int", "int"]);
+    const newDate = new Date(date);
+    return h || m || s ? new Date(newDate.getTime() + h*60*60*1000 + m*60*1000 + s*1000) : newDate;
 };
