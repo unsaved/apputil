@@ -2,17 +2,19 @@
   "name": "@admc.com/apputil",
   "version": "2.2.2",
   "description": "Application Dev Utils",
-  "main": "index.js",
+  "main": "apputil.mjs",
   "bin": {
-    "jsShell": "jsShell.js"
+    "jsShellDriver.mjs": "jsShellDriver.mjs",
+    "jsShellDriver.cjs": "jsShellDriver.cjs"
   },
+  "exports": [ { "require": "./apputil.cjs"  }, "./apputil-es6.mjs" ],
   "scripts": {
     "lint": "eslint",
-    "lint-all": "eslint *.js test/**/*.js",
+    "lint-all": "eslint *.[cm]js test/*.[cm]js",
     "lintHtml": "eslint -f html -o local/eslint.html",
     "test": "mocha",
-    "unixJsShell": "node jsShellDriver.js -q testdata/cmdUnix.json",
-    "winJsShell": "node jsShellDriver.js -q testdata/cmdWin.json"
+    "unixJsShell": "node jsShellDriver.cjs -q testdata/cmdUnix.json",
+    "winJsShell": "node jsShellDriver.cjs -q testdata/cmdWin.json"
   },
   "keywords": [
     "Utilities"
@@ -25,11 +27,12 @@
     "url": "https://github.com/unsaved/apputil.git"
   },
   "dependencies": {
-    "@admc.com/bycontract-plus": "^1.2.1",
+    "@admc.com/bycontract-plus": "^2.1.1",
     "yargs": "^17.5.1"
   },
   "devDependencies": {
     "eslint": "^8.17.0",
     "mocha": "^10.2.0"
-  }
+  },
+  "type": "module"
 }

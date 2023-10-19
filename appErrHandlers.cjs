@@ -1,7 +1,7 @@
 "use strict";
 
 const { validate } = require("@admc.com/bycontract-plus");
-const AppErr = require("./AppErr");
+const AppErr = require("./AppErr.cjs");
 
 /**
  * This encapsulates handling of expected exceptions in a way that supports

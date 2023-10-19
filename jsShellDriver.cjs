@@ -2,7 +2,7 @@
 
 "use strict";
 const fs = require("fs");
-const { conciseCatcher, JsShell, getAppVersion } = require("./index.js");
+const { conciseCatcher, JsShell, getAppVersion } = require("./apputil.cjs");
 const { validate } = require("@admc.com/bycontract-plus");
 
 const yargs = require("yargs")(process.argv.slice(2)).

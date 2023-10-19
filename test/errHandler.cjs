@@ -1,6 +1,6 @@
 "use strict";
 
-const { AppErr, conciseErrorHandler } = require("../index");
+const { AppErr, conciseErrorHandler } = require("../apputil.cjs");
 const assert = require("node:assert/strict");
 
 describe("apputils 'mkDate' function", () => {

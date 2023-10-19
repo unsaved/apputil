@@ -2,7 +2,7 @@
 
 const { validate } = require("@admc.com/bycontract-plus");
 const childProcess = require("child_process");
-const AppErr = require("./AppErr");
+const AppErr = require("./AppErr.cjs");
 const util = require("util");
 
 const REF_RE = /[$]{([^}]+)}/g;

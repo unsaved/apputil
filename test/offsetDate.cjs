@@ -1,6 +1,6 @@
 "use strict";
 
-const { offsetDate } = require("../index");
+const { offsetDate } = require("../apputil.cjs");
 const assert = require("node:assert/strict");
 
 describe("apputils 'offsetDate' function", () => {

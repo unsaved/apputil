@@ -1,11 +1,11 @@
 "use strict";
 const { validate } = require("@admc.com/bycontract-plus");
 
-module.exports.AppErr = require("./AppErr");
-const appErrHandlers = require("./appErrHandlers");
+module.exports.AppErr = require("./AppErr.cjs");
+const appErrHandlers = require("./appErrHandlers.cjs");
 for (const key in appErrHandlers) module.exports[key] = appErrHandlers[key];
-module.exports.NetRC = require("./NetRC");
-module.exports.JsShell = require("./JsShell");
+module.exports.NetRC = require("./NetRC.cjs");
+module.exports.JsShell = require("./JsShell.cjs");
 module.exports.getAppVersion = dirName => {
     if (typeof dirName !== "string")
         throw new Error("getAppVersion must be called like: getAppVersion(__dirname)");

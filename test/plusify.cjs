@@ -1,6 +1,6 @@
 "use strict";
 
-const { plusify } = require("../index");
+const { plusify } = require("../apputil.cjs");
 const assert = require("node:assert/strict");
 
 describe("apputils 'plusify' function", () => {

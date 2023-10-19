@@ -1,6 +1,6 @@
 "use strict";
 
-const AppErr = require("../AppErr");
+const { AppErr } = require("../apputil.cjs");
 const assert = require("node:assert/strict");
 
 describe("apputils 'mkDate' function", () => {

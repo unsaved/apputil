@@ -1,6 +1,6 @@
 "use strict";
 
-const { mkDate } = require("../index");
+const { mkDate } = require("../apputil.cjs");
 const assert = require("node:assert/strict");
 
 describe("apputils 'mkDate' function", () => {

@@ -2,7 +2,7 @@
 {
   "env": { "es2022": true, "node": true },
   "extends": "eslint:recommended",
-  "parserOptions": { "ecmaVersion": "latest" },
+  "parserOptions": { "ecmaVersion": "latest", "sourceType": "module" },
   "rules": {
     "camelcase": ["warn", { "properties": "never" }],
     "eqeqeq": "error",
@@ -82,7 +82,7 @@
       "files": ["**/*.cjs"],
       "parserOptions": { "ecmaVersion": "latest", "sourceType": "script" }
     }, {
-      "files": ["test/**/*.js"],
+      "files": ["test/**/*.[cm]js", "test/**/*.js"],
       "globals": {
         "it": "readonly",
         "describe": "readonly"

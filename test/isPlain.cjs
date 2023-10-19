@@ -1,6 +1,6 @@
 "use strict";
 
-const { isPlainObject } = require("../index");
+const { isPlainObject } = require("../apputil.cjs");
 const assert = require("node:assert/strict");
 
 describe("apputils 'isPlainObject' function", () => {
