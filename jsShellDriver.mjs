@@ -2,7 +2,7 @@
 
 import fs from "fs";
 import yargs from "yargs";
-import { conciseCatcher, JsShell, getAppVersion } from "./apputil-es6.mjs";
+import { conciseCatcher, JsShell } from "./apputil-es6.mjs";
 import { validate } from "@admc.com/bycontract-plus";
 
 const yargsDict = yargs(process.argv.slice(2)).

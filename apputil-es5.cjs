@@ -28,11 +28,12 @@ module.exports.YMD_RE = /^(\d{4})-([01]\d)-([0-3]\d)$/;
  * @param str string, either yyyy-mm-dd (with special local-midnight-handling) or
  *        any other string accepted by the native Date constructor.
  * @param h hour offset, optional integer
- * @param m hour offset, optional integer
- * @param s hour offset, optional integer
+ * @param m minute offset, optional integer
+ * @param s second offset, optional integer
+ * @param ms millisecond offset, optional integer
  */
-module.exports.mkDate = (str, h=0, m=0, s=0) => {
-    validate([str, h, m, s], ["string", "int", "int", "int"]);
+module.exports.mkDate = (str, h=0, m=0, s=0, ms=0) => {
+    validate([str, h, m, s, ms], ["string", "int", "int", "int", "int"]);
     const ymdEx = module.exports.YMD_RE.exec(str);
     let newDate;
     if (ymdEx) {
@@ -42,7 +43,8 @@ module.exports.mkDate = (str, h=0, m=0, s=0) => {
     } else {
         newDate = new Date(str);
     }
-    return h || m || s ? new Date(newDate.getTime() + h*60*60*1000 + m*60*1000 + s*1000) : newDate;
+    return h || m || s || ms ?
+      new Date(newDate.getTime() + h*60*60*1000 + m*60*1000 + s*1000 + ms) : newDate;
 };
 
 module.exports.plusify = (n, decimals) => {
@@ -60,11 +62,13 @@ module.exports.plusify = (n, decimals) => {
  *
  * @param date Date
  * @param h hour offset, optional integer
- * @param m hour offset, optional integer
- * @param s hour offset, optional integer
+ * @param m minute offset, optional integer
+ * @param s second offset, optional integer
+ * @param ms millisecond offset, optional integer
  */
-module.exports.offsetDate = (date, h=0, m=0, s=0) => {
-    validate([date, h, m, s], ["date", "int", "int", "int"]);
+module.exports.offsetDate = (date, h=0, m=0, s=0, ms=0) => {
+    validate([date, h, m, s, ms], ["date", "int", "int", "int", "int"]);
     const newDate = new Date(date);
-    return h || m || s ? new Date(newDate.getTime() + h*60*60*1000 + m*60*1000 + s*1000) : newDate;
+    return h || m || s || ms ?
+      new Date(newDate.getTime() + h*60*60*1000 + m*60*1000 + s*1000 + ms) : newDate;
 };
