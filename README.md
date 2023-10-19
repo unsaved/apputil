@@ -4,6 +4,7 @@ Application Development Utilities
 An Error type and handlers for concise error handling for expected failure
 cases.
 
-A very powerful script runner that's more precise and direct for controlled
+A very powerful script runner, JsShell, that's more precise and direct for controlled
 program executions than OS shells.
-The first case is to drive generation of module Java JREs from a node package.
+
+Since version 2.3.1 supports both CommonJS/ES5 requires and ES6 import...from.
