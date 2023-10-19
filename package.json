@@ -1,13 +1,18 @@
 {
   "name": "@admc.com/apputil",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "description": "Application Dev Utils",
   "main": "apputil.mjs",
   "bin": {
     "jsShellDriver.mjs": "jsShellDriver.mjs",
     "jsShellDriver.cjs": "jsShellDriver.cjs"
   },
-  "exports": [ { "require": "./apputil.cjs"  }, "./apputil-es6.mjs" ],
+  "exports": [
+    {
+      "require": "./apputil.cjs"
+    },
+    "./apputil-es6.mjs"
+  ],
   "scripts": {
     "lint": "eslint",
     "lint-all": "eslint *.[cm]js test/*.[cm]js",
