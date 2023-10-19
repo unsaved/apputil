@@ -2,7 +2,7 @@
 
 "use strict";
 const fs = require("fs");
-const { conciseCatcher, JsShell, getAppVersion } = require("./apputil-es5.cjs");
+const { conciseCatcher, JsShell } = require("./apputil-es5.cjs");
 const { validate } = require("@admc.com/bycontract-plus");
 
 const yargs = require("yargs")(process.argv.slice(2)).
@@ -48,9 +48,10 @@ Command files are JSON of lists of objects with these elements:
   }).
   alias("help", "h").
   demandCommand(1).
-  version(getAppVersion(__dirname));
+  version();
 const yargsDict = yargs.argv;
 const progName = yargsDict.$0.replace(/^.*[\\/]/, "");  // eslint-disable-line no-unused-vars
+console.warn("progName", progName);
 
 if (!yargsDict.d) console.debug = () => {};
 if (yargsDict.q) console.debug = console.log = console.info = () => {};

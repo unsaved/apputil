@@ -5,7 +5,7 @@ import yargs from "yargs";
 import { conciseCatcher, JsShell, getAppVersion } from "./apputil-es6.mjs";
 import { validate } from "@admc.com/bycontract-plus";
 
-yargs(process.argv.slice(2)).
+const yargsDict = yargs(process.argv.slice(2)).
   strictOptions().
   usage(`SYNTAX: $0 [-dEhOqvz] [-m name=val] [-f folder] -- cmds.json...
 Command files are JSON of lists of objects with these elements:
@@ -48,9 +48,9 @@ Command files are JSON of lists of objects with these elements:
   }).
   alias("help", "h").
   demandCommand(1).
-  version(getAppVersion(__dirname));
-const yargsDict = yargs.argv;
+  version().argv;
 const progName = yargsDict.$0.replace(/^.*[\\/]/, "");  // eslint-disable-line no-unused-vars
+console.warn("progName", progName);
 
 if (!yargsDict.d) console.debug = () => {};
 if (yargsDict.q) console.debug = console.log = console.info = () => {};
