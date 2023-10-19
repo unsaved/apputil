@@ -1,3 +1,5 @@
+"use strict";
+
 const { offsetDate } = require("../index");
 const assert = require("node:assert/strict");
 
