@@ -58,26 +58,28 @@ module.exports.conciseCatcher = function(wrappedFn, exitValue) {
  *        if null then we just return after reporting.
  *        If a positive nteger then we will exit with that value.
  */
-module.exports.conciseErrorHandler = function(e, exitValue) {
-    validate(arguments, ["*", "posint="]);
+module.exports.mkConciseErrorHandler = function(exitValue) {
+    validate(arguments, ["posint="]);
 
-    // First reporting:
-    if (e === null) console.error("A null was thrown.  There's no way to distinguish further.");
-    else if (typeof e !== "object")
-        console.error(`A ${typeof e} was thrown.  There's no way to distinguish further.`);
-    else if (!("stack" in e)) console.error(
-      `An object with o stack trace  was thrown.  There's no way to distinguish further.`);
-    else if (e instanceof AppErr)
-        console.error(`Aborting.  ${e.message}`);
-    else if (exitValue !== null)
-        console.error(e.stack);  // Since Node will not be able to report about source, we do.
+    return function(e) {
+        // First reporting:
+        if (e === null) console.error("A null was thrown.  There's no way to distinguish further.");
+        else if (typeof e !== "object")
+            console.error(`A ${typeof e} was thrown.  There's no way to distinguish further.`);
+        else if (!("stack" in e)) console.error(
+          `An object with o stack trace  was thrown.  There's no way to distinguish further.`);
+        else if (e instanceof AppErr)
+            console.error(`Aborting.  ${e.message}`);
+        else if (exitValue !== null)
+            console.error(e.stack);  // Since Node will not be able to report about source, we do.
 
-    // Disposition
-    switch (exitValue) {
-        // Node will show source code line, stack trace, and Error-implementor msg. if not
-        // caught again:
-        case undefined: throw e;
-        case null: return;  // purposefully no default
-    }
-    if (exitValue !== undefined) process.exit(exitValue);
+        // Disposition
+        switch (exitValue) {
+            // Node will show source code line, stack trace, and Error-implementor msg. if not
+            // caught again:
+            case undefined: throw e;
+            case null: return;  // purposefully no default
+        }
+        if (exitValue !== undefined) process.exit(exitValue);
+    };
 };

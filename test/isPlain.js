@@ -1,7 +1,7 @@
 import { isPlainObject } from "../apputil-es6.mjs";
 import { strict as assert } from 'assert';
 
-describe("apputils 'isPlainObject' function", () => {
+describe("es6 apputils 'isPlainObject' function", () => {
     it("positives", () => {
         assert.ok(isPlainObject({}));
         assert.ok(isPlainObject({alpha: 1}));

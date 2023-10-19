@@ -1,7 +1,7 @@
 import { offsetDate } from "../apputil-es6.mjs";
 import { strict as assert } from 'assert';
 
-describe("apputils 'offsetDate' function", () => {
+describe("es6 apputils 'offsetDate' function", () => {
     it("non-date param", () => {
         assert.throws(() => { offsetDate(null); }, TypeError);
         assert.throws(() => { offsetDate(null, 1, 2, 3); }, TypeError);

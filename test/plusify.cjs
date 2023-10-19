@@ -3,7 +3,7 @@
 const { plusify } = require("../apputil-es5.cjs");
 const assert = require("node:assert/strict");
 
-describe("apputils 'plusify' function", () => {
+describe("es5 apputils 'plusify' function", () => {
     it("bad params", () => {
         assert.throws(() => { plusify(); }, TypeError);
         assert.throws(() => { plusify(3, 4.5); }, TypeError);

@@ -1,7 +1,7 @@
 import { mkDate } from "../apputil-es6.mjs";
 import { strict as assert } from 'assert';
 
-describe("apputils 'mkDate' function", () => {
+describe("es6 apputils 'mkDate' function", () => {
     it("param not a string", () => {
         assert.throws(() => { mkDate(null); }, TypeError);
         assert.throws(() => { mkDate(123); }, TypeError);

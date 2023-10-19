@@ -1,10 +1,14 @@
 "use strict";
 
-const { AppErr, conciseErrorHandler } = require("../apputil-es5.cjs");
+const { AppErr, mkConciseErrorHandler } = require("../apputil-es5.cjs");
 const assert = require("node:assert/strict");
 
-describe("apputils 'errHandler' function", () => {
-    it("rethrows", () => {
-        assert.throws(() => conciseErrorHandler(new AppErr("Pass-thru")), AppErr);
+describe("es5 apputils 'errHandler' function", () => {
+    it("rethrow", () => {
+        assert.throws(() => mkConciseErrorHandler()(new AppErr("Pass-thru")), AppErr);
+    });
+
+    it("swallow", () => {
+        mkConciseErrorHandler(null)(new AppErr("Swallow"));
     });
 });

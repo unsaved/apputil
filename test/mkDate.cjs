@@ -3,7 +3,7 @@
 const { mkDate } = require("../apputil-es5.cjs");
 const assert = require("node:assert/strict");
 
-describe("apputils 'mkDate' function", () => {
+describe("es5 apputils 'mkDate' function", () => {
     it("param not a string", () => {
         assert.throws(() => { mkDate(null); }, TypeError);
         assert.throws(() => { mkDate(123); }, TypeError);

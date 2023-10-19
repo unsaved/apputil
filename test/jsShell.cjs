@@ -3,7 +3,7 @@
 const { JsShell } = require("../apputil-es5.cjs");
 const assert = require("node:assert/strict");
 
-describe("apputils 'JsShell' class", () => {
+describe("es5 apputils 'JsShell' class", () => {
     it("AppError available", () => {
         assert.doesNotThrow(() =>
             new JsShell("pseudofile", [{ "label": "whoami?", "cmd": ["whoami"] }],

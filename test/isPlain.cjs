@@ -3,7 +3,7 @@
 const { isPlainObject } = require("../apputil-es5.cjs");
 const assert = require("node:assert/strict");
 
-describe("apputils 'isPlainObject' function", () => {
+describe("es5 apputils 'isPlainObject' function", () => {
     it("positives", () => {
         assert.ok(isPlainObject({}));
         assert.ok(isPlainObject({alpha: 1}));

@@ -3,7 +3,7 @@
 const { offsetDate } = require("../apputil-es5.cjs");
 const assert = require("node:assert/strict");
 
-describe("apputils 'offsetDate' function", () => {
+describe("es5 apputils 'offsetDate' function", () => {
     it("non-date param", () => {
         assert.throws(() => { offsetDate(null); }, TypeError);
         assert.throws(() => { offsetDate(null, 1, 2, 3, 4); }, TypeError);
