@@ -1,6 +1,6 @@
 {
   "name": "@admc.com/apputil",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Application Dev Utils",
   "main": "apputil-es6.mjs",
   "bin": {
