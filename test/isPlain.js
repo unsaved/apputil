@@ -1,7 +1,5 @@
-"use strict";
-
-const { isPlainObject } = require("../apputil-es5.cjs");
-const assert = require("node:assert/strict");
+import { isPlainObject } from "../apputil-es6.mjs";
+import { strict as assert } from 'assert';
 
 describe("apputils 'isPlainObject' function", () => {
     it("positives", () => {

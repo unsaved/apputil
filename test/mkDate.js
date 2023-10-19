@@ -1,7 +1,5 @@
-"use strict";
-
-const { mkDate } = require("../apputil-es5.cjs");
-const assert = require("node:assert/strict");
+import { mkDate } from "../apputil-es6.mjs";
+import { strict as assert } from 'assert';
 
 describe("apputils 'mkDate' function", () => {
     it("param not a string", () => {

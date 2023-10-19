@@ -1,7 +1,5 @@
-"use strict";
-
-const { AppErr } = require("../apputil-es5.cjs");
-const assert = require("node:assert/strict");
+import { AppErr } from "../apputil-es6.mjs";
+import { strict as assert } from 'assert';
 
 describe("apputils 'AppErr' class", () => {
     it("AppError available", () => {

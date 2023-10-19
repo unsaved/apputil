@@ -1,7 +1,5 @@
-"use strict";
-
-const { AppErr, conciseErrorHandler } = require("../apputil-es5.cjs");
-const assert = require("node:assert/strict");
+import { AppErr, conciseErrorHandler } from "../apputil-es6.mjs";
+import { strict as assert } from 'assert';
 
 describe("apputils 'errHandler' function", () => {
     it("rethrows", () => {

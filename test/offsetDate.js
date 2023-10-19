@@ -1,7 +1,5 @@
-"use strict";
-
-const { offsetDate } = require("../apputil-es5.cjs");
-const assert = require("node:assert/strict");
+import { offsetDate } from "../apputil-es6.mjs";
+import { strict as assert } from 'assert';
 
 describe("apputils 'offsetDate' function", () => {
     it("non-date param", () => {

@@ -1,7 +1,5 @@
-"use strict";
-
-const { plusify } = require("../apputil-es5.cjs");
-const assert = require("node:assert/strict");
+import { plusify } from "../apputil-es6.mjs";
+import { strict as assert } from 'assert';
 
 describe("apputils 'plusify' function", () => {
     it("bad params", () => {

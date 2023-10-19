@@ -2,14 +2,14 @@
   "name": "@admc.com/apputil",
   "version": "2.3.0",
   "description": "Application Dev Utils",
-  "main": "apputil.mjs",
+  "main": "apputil-es6.mjs",
   "bin": {
     "jsShellDriver.mjs": "jsShellDriver.mjs",
     "jsShellDriver.cjs": "jsShellDriver.cjs"
   },
   "exports": [
     {
-      "require": "./apputil.cjs"
+      "require": "./apputil-es5.cjs"
     },
     "./apputil-es6.mjs"
   ],

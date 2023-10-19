@@ -1,7 +1,5 @@
-"use strict";
-
-const { NetRC } = require("../apputil-es5.cjs");
-const assert = require("node:assert/strict");
+import { NetRC } from "../apputil-es6.mjs";
+import { strict as assert } from 'assert';
 
 describe("apputils 'NetRc' class", () => {
     it("AppError available", () => {
