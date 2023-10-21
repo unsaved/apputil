@@ -3,7 +3,7 @@
 "use strict";
 const fs = require("fs");
 const { conciseCatcher, JsShell } = require("./apputil-es5.cjs");
-const { validate } = require("@admc.com/bycontract-plus");
+const z = require("zod");
 
 const yargs = require("yargs")(process.argv.slice(2)).
   strictOptions().
@@ -68,8 +68,9 @@ if ("m" in yargsDict) {
 }
 
 conciseCatcher(function(cmdFiles, cwd, r0, out, err, envMap) {
-    validate(arguments, ["string[]",
-      "string=", "boolean=", "boolean=", "boolean=", "plainobject="]);
+    z.tuple([z.string().array(), z.string().optional(), z.boolean().optional(),
+      z.boolean().optional(), z.boolean().optional(), z.object({}).optional()]).
+      parse(Array.prototype.slice.call(arguments));
     const jsShells = cmdFiles.map(cmdFile =>
         new JsShell(cmdFile, JSON.parse(fs.readFileSync(cmdFile, "utf8")),
           cwd, envMap, envMap === undefined ? undefined : true, process.env)
