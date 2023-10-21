@@ -1,7 +1,7 @@
-import { validate } from "@admc.com/bycontract-plus";
 import childProcess from "child_process";
 import AppErr from "./AppErr.mjs";
 import util from "util";
+import z from "zod";
 
 const REF_RE = /[$]{([^}]+)}/g;
 
@@ -16,18 +16,24 @@ const REF_RE = /[$]{([^}]+)}/g;
  */
 export default class JsShell {
     constructor(id, config, defaultCwd, env, envAdd, substMap) {
-        validate(arguments, ["string", "plainobject[]", "string=",
-          "plainobject=", "boolean=", "object="]);
+        z.tuple([z.string(), z.object({}).array(), z.string().optional(), z.object({}).optional(),
+          z.boolean().optional(), z.object({}).optional()]).
+          parse(Array.prototype.slice.call(arguments));
         this.id = id;
         if (envAdd !== undefined && env === undefined)
             throw new AppErr("Config record specifies 'envAdd' but gives no 'env' map");
         if (env !== undefined) for (const key in env)
-            validate(env[key], "string", `Env var '${key}' value not a string ${env[key]}`);
+            z.string({
+                required_error: s => `Env var '${s}' value not set`,
+                invalid_type_error: s => `Env var '${s}' value not a string ${env[key]}`,
+            }).parse(env[key]);
         if (substMap !== undefined) for (const key in substMap)
-            validate(substMap[key], "string",
-              `substMap var '${key}' value not a string ${substMap[key]}`);
+            z.string({
+                required_error: s => `substMap var '${s}' value not set`,
+                invalid_type_error: s => `substMap var '${s}' value not a string ${env[key]}`,
+            }).parse(substMap[key]);
         config.forEach((rec, i) => {
-            validate(rec, {cmd: "string[]"}, `Config record #${i+1}`);
+            z.object({cmd: z.string().array()}).parse(rec);
             if ("stdout" in rec && typeof rec.stdout !== "boolean")
                 throw new AppErr(`Config record ${id} #${i+1} `
                   + `has non-boolean 'stdout' value: ${rec.stdout}`);
@@ -72,7 +78,8 @@ export default class JsShell {
      * of jsShellDriver.js.
      */
     run(dfltRequire0=false, dfltStdout=true, dfltStderr=true) {
-        validate(arguments, ["boolean=", "boolean=", "boolean="]);
+        z.tuple([z.boolean().optional(), z.boolean().optional(), z.boolean().optional()]).
+          parse(Array.prototype.slice.call(arguments));
         this.lastExecDuration = -1;
         const substMapRef = this.substMap;
         const startMs = new Date().valueOf();

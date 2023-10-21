@@ -3,7 +3,7 @@
 import fs from "fs";
 import yargs from "yargs";
 import { conciseCatcher, JsShell } from "./apputil-es6.mjs";
-import { validate } from "@admc.com/bycontract-plus";
+import z from "zod";
 
 const yargsDict = yargs(process.argv.slice(2)).
   strictOptions().
@@ -67,8 +67,9 @@ if ("m" in yargsDict) {
 }
 
 conciseCatcher(function(cmdFiles, cwd, r0, out, err, envMap) {
-    validate(arguments, ["string[]",
-      "string=", "boolean=", "boolean=", "boolean=", "plainobject="]);
+    z.tuple([z.string().array(), z.string().optional(), z.boolean().optional(),
+      z.boolean().optional(), z.boolean().optional(), z.object({}).optional()]).
+      parse(Array.prototype.slice.call(arguments));
     const jsShells = cmdFiles.map(cmdFile =>
         new JsShell(cmdFile, JSON.parse(fs.readFileSync(cmdFile, "utf8")),
           cwd, envMap, envMap === undefined ? undefined : true, process.env)

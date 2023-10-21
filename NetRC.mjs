@@ -1,7 +1,7 @@
 import fs from "fs";
 import os from "os";
 import AppErr from "./AppErr.mjs";
-import { validate } from "@admc.com/bycontract-plus";
+import z from "zod";
 
 // JavaScript doesn't allow for class static constants, so:
 const URL_RE = /^[^:]+:[/]+([\w.-]+)/;
@@ -11,7 +11,7 @@ const PASSWORD_RE = /\spassword\s+(\S+)/;
 
 export default class NetRC {
     constructor() {
-        validate(arguments, []);
+        z.array().length(0).parse(Array.prototype.slice.call(arguments));
         const homeDir = os.homedir();
         if (fs.existsSync(`${homeDir}/.netrc`) && fs.statSync(`${homeDir}/.netrc`).isFile())
             this.file = `${homeDir}/.netrc`;
@@ -26,7 +26,7 @@ export default class NetRC {
         }
     }
     getAuthSettings(urlString) {
-        validate(arguments, ["string"]);
+        z.tuple([z.string()]).parse(Array.prototype.slice.call(arguments));
         let ex = URL_RE.exec(urlString);
         if (!ex) throw new AppErr("URL malformatted:", urlString);
         const hostname = ex[1];
