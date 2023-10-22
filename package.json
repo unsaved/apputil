@@ -18,8 +18,8 @@
     "lint-all": "eslint *.[cm]js test/*.[cm]js test/*.js",
     "lintHtml": "eslint -f html -o local/eslint.html",
     "test": "mocha",
-    "unixJsShell": "node jsShellDriver.cjs -q testdata/cmdUnix.json",
-    "winJsShell": "node jsShellDriver.cjs -q testdata/cmdWin.json"
+    "unixJsShell": "node jsShellDriver.mjs -q testdata/cmdUnix.json",
+    "winJsShell": "node jsShellDriver.mjs -q testdata/cmdWin.json"
   },
   "keywords": [
     "Utilities"
