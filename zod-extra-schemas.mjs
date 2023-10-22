@@ -1,9 +1,8 @@
-"use strict";
+import z from "zod";
 
-const z = require("zod");
-
+const thingsToExport = {};
 // First a utility function to make functon 'arguments' compatible with Zod tuple tests
-module.exports.argsTuplify = (args, maxLen) => {
+thingsToExport.argsTuplify = (args, maxLen) => {
     const argsArray = Array.prototype.slice.call(args);
     const origALen = argsArray.length;
     if (origALen >= maxLen) return argsArray;
@@ -13,14 +12,14 @@ module.exports.argsTuplify = (args, maxLen) => {
 };
 
 // Short-cuts that collapse chained functions into a single schema:
-module.exports.int = z.number().int();
-module.exports.posint = z.number().int().positive();
-module.exports.nonnegint = z.number().int().nonnegative();
-module.exports.positive = z.number().positive();
-module.exports.nonneg = z.number().nonnegative();
+thingsToExport.int = z.number().int();
+thingsToExport.posint = z.number().int().positive();
+thingsToExport.nonnegint = z.number().int().nonnegative();
+thingsToExport.positive = z.number().positive();
+thingsToExport.nonneg = z.number().nonnegative();
 // Fixed because OOTB does not detect oversized components.
 // These are accepted valid by Zod:  2023-13-42T25:73:74Z  2023-00-00T25:73:74Z
-module.exports.isotimestr = z.string().datetime({offset: true}).refine(s => {
+thingsToExport.isotimestr = z.string().datetime({offset: true}).refine(s => {
     const ex = /^\d+-(\d+)-(\d+)T(\d+):(\d+):(\d+)/.exec(s);
     if (!ex) return false;
     const ints = ex.slice(1).map(s => parseInt(s));
@@ -29,7 +28,7 @@ module.exports.isotimestr = z.string().datetime({offset: true}).refine(s => {
 });
 // to second resolution with no optional zone suffix
 // Can't leverage any Zod OOTB because they all ready some zone adjustment suffix
-module.exports.isotimestr_s = z.string().refine(s => {
+thingsToExport.isotimestr_s = z.string().refine(s => {
     const ex = /^\d{4}-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)$/.exec(s);
     if (!ex) return false;
     const ints = ex.slice(1).map(s => parseInt(s));
@@ -38,12 +37,14 @@ module.exports.isotimestr_s = z.string().refine(s => {
 });
 
 // New operations not supported directly by Zod
-module.exports.datestr =
+thingsToExport.datestr =
   z.string().regex(/^\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12]\d|3[01])$/);
-module.exports.slashydatestr =
+thingsToExport.slashydatestr =
   z.string().regex(/^\d{4}\/(0?[1-9]|1[012])\/(0?[1-9]|[12]\d|3[01])$/);
-module.exports.strictdatestr =
+thingsToExport.strictdatestr =
   z.string().regex(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12]\d|3[01])$/);
 // DOES NOT WORK for /re/s!:
-module.exports.plainobject = z.object({}).refine(val =>
+thingsToExport.plainobject = z.object({}).refine(val =>
   Object.getPrototypeOf(val) === Object.getPrototypeOf({}));
+
+export default thingsToExport;

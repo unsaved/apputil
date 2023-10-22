@@ -2,6 +2,7 @@ import fs from "fs";
 import os from "os";
 import AppErr from "./AppErr.mjs";
 import z from "zod";
+import zxs from "./zod-extra-schemas.mjs";
 
 // JavaScript doesn't allow for class static constants, so:
 const URL_RE = /^[^:]+:[/]+([\w.-]+)/;
@@ -26,7 +27,7 @@ export default class NetRC {
         }
     }
     getAuthSettings(urlString) {
-        z.tuple([z.string()]).parse(Array.prototype.slice.call(arguments));
+        z.tuple([z.string()]).parse(zxs.argsTuplify(arguments, 1));
         let ex = URL_RE.exec(urlString);
         if (!ex) throw new AppErr("URL malformatted:", urlString);
         const hostname = ex[1];

@@ -2,6 +2,7 @@ import childProcess from "child_process";
 import AppErr from "./AppErr.mjs";
 import util from "util";
 import z from "zod";
+import zxs from "./zod-extra-schemas.mjs";
 
 const REF_RE = /[$]{([^}]+)}/g;
 
@@ -16,9 +17,11 @@ const REF_RE = /[$]{([^}]+)}/g;
  */
 export default class JsShell {
     constructor(id, config, defaultCwd, env, envAdd, substMap) {
-        z.tuple([z.string(), z.object({}).array(), z.string().optional(), z.object({}).optional(),
-          z.boolean().optional(), z.object({}).optional()]).
-          parse(Array.prototype.slice.call(arguments));
+        z.tuple([z.string(), zxs.plainobject.array(),
+          z.string().optional(), zxs.plainobject.optional(), z.boolean().optional(),
+          // this was object instead of plainobject before ported from bycontract.  Mistake?
+          z.object({}).optional()]).
+          parse(zxs.argsTuplify(arguments, 6));
         this.id = id;
         if (envAdd !== undefined && env === undefined)
             throw new AppErr("Config record specifies 'envAdd' but gives no 'env' map");
@@ -79,7 +82,7 @@ export default class JsShell {
      */
     run(dfltRequire0=false, dfltStdout=true, dfltStderr=true) {
         z.tuple([z.boolean().optional(), z.boolean().optional(), z.boolean().optional()]).
-          parse(Array.prototype.slice.call(arguments));
+          parse(zxs.argsTuplify(arguments, 3));
         this.lastExecDuration = -1;
         const substMapRef = this.substMap;
         const startMs = new Date().valueOf();

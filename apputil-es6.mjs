@@ -1,4 +1,3 @@
-import { validate } from "@admc.com/bycontract-plus";
 import AppErrRef from "./AppErr.mjs";
 import { conciseCatcher as conciseCatcherRef, mkConciseErrorHandler as mkConciseErrorHandlerRef }
     from "./appErrHandlers.mjs";
@@ -11,6 +10,9 @@ export const NetRC = NetRCRef;
 export const JsShell = JsShellRef;
 import fs from "fs";
 import path from "path";
+import z from "zod";
+import zxsRef from "./zod-extra-schemas.mjs";
+export const zxs = zxsRef;
 
 export const getAppVersion = dirName => {
     if (typeof dirName !== "string")
@@ -38,7 +40,7 @@ export const YMD_RE = /^(\d{4})-([01]\d)-([0-3]\d)$/;
  * @param ms millisecond offset, optional integer
  */
 export const mkDate = (str, h=0, m=0, s=0, ms=0) => {
-    validate([str, h, m, s, ms], ["string", "int", "int", "int", "int"]);
+    z.tuple([z.string(), zxs.int, zxs.int, zxs.int, zxs.int]).parse([str, h, m, s, ms]);
     const ymdEx = YMD_RE.exec(str);
     let newDate;
     if (ymdEx) {
@@ -53,7 +55,7 @@ export const mkDate = (str, h=0, m=0, s=0, ms=0) => {
 };
 
 export const plusify = (n, decimals) => {
-    validate([n, decimals], ["number", "int"]);
+    z.tuple([z.number(), zxs.int]).parse([n, decimals]);
     const truncated = Number(n.toFixed(decimals));
     const str = truncated < 0 ? String(truncated) : `+${truncated}`;
     const ex = /[.](\d*)/.exec(str);
@@ -72,7 +74,7 @@ export const plusify = (n, decimals) => {
  * @param ms millisecond offset, optional integer
  */
 export const offsetDate = (date, h=0, m=0, s=0, ms=0) => {
-    validate([date, h, m, s, ms], ["date", "int", "int", "int", "int"]);
+    z.tuple([z.date(), zxs.int, zxs.int, zxs.int, zxs.int]).parse([date, h, m, s, ms]);
     const newDate = new Date(date);
     return h || m || s || ms ?
       new Date(newDate.getTime() + h*60*60*1000 + m*60*1000 + s*1000 + ms) : newDate;

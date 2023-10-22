@@ -1,10 +1,11 @@
 import { mkDate } from "../apputil-es6.mjs";
 import { strict as assert } from 'assert';
+import { ZodError } from "zod";
 
 describe("es6 apputils 'mkDate' function", () => {
     it("param not a string", () => {
-        assert.throws(() => { mkDate(null); }, TypeError);
-        assert.throws(() => { mkDate(123); }, TypeError);
+        assert.throws(() => { mkDate(null); }, ZodError);
+        assert.throws(() => { mkDate(123); }, ZodError);
     });
     it("generate a default Date", () => {
         const newDate = mkDate("2023-04-05T01:02:03.345Z");

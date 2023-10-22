@@ -1,45 +1,29 @@
-import { validate } from "@admc.com/bycontract-plus";
 import AppErr from "./AppErr.mjs";
+import z from "zod";
+import zxs from "./zod-extra-schemas.mjs";
 
 /**
  * This encapsulates handling of expected exceptions in a way that supports
  * both main thread and async threads.
  *
- * @param exitValue defaults to no-exit-value.  I.e. will never exit.
- *   If set to a positive integer and if function execution throws
- *   anything then after generating appropriate text output, we will
- *   exit the process with the given return value.
+ * Error-reporting behavior is as documented by the mkConciseErrorHandler fuction below.
+ * We use that function, passing it the exitValue parameter.
  */
 export function conciseCatcher(wrappedFn, exitValue) {
-    validate(arguments, ["function", "posint="]);
+    z.tuple([z.function(), zxs.posint.nullish()]).parse(zxs.argsTuplify(arguments, 2));
+    const errHandler = module.exports.mkConciseErrorHandler(exitValue);
     return function() {
         try {
             return wrappedFn.apply(null, arguments);
         } catch (e) {
-            if (e === null)
-                console.error("A null was thrown.  Try using 'node --trace-uncaught' "
-                  + "if you need the stack trace");
-            else if (typeof e !== "object")
-                console.error(`A ${typeof e} (non-object) was thrown.  `
-                  + "Try using 'node --trace-uncaught' if you need the stack trace");
-            else if (!("stack" in e))
-                console.error(`An object with no stack was thrown.  `
-                  + "Try using 'node --trace-uncaught' if you need the stack trace");
-            else if (e.name === "AppErr")
-                console.error(`Aborting.  ${e.message}`);
-            else
-                // Weakness here is that you lose OOTB display of the actual
-                // source line of code.  Since AppErr will be thrown far
-                // more often, this is acceptable.
-                console.error(e.stack);
-            if (exitValue !== undefined) process.exit(exitValue);
+            errHandler(e);
             return undefined;
         }
     };
 }
 
 /**
- * Reporting behavior dependson whether an AppErr was thrown.
+ * Reporting behavior dependson whether an AppErr or ZodError was thrown.
  * Concise message for App Errors; otherwise NO reporting if exitValue null (with re-throw)
  * and output stack trace if non-null (incl. unset) exitValue.
  *
@@ -57,7 +41,7 @@ export function conciseCatcher(wrappedFn, exitValue) {
  *        If a positive nteger then we will exit with that value.
  */
 export function mkConciseErrorHandler(exitValue) {
-    validate(arguments, ["posint="]);
+    z.tuple([zxs.posint.nullish()]).parse(zxs.argsTuplify(arguments, 1));
 
     return function(e) {
         // First reporting:
@@ -67,7 +51,11 @@ export function mkConciseErrorHandler(exitValue) {
         else if (!("stack" in e)) console.error(
           `An object with o stack trace  was thrown.  There's no way to distinguish further.`);
         else if (e instanceof AppErr)
-            console.error(`Aborting.  ${e.message}`);
+            console.error(`AppErr.  ${e.message}`);
+        else if (e instanceof z.ZodError)
+            console.error(
+              e.stack.split("\n").filter(l=>/^ {4}at .+:\d+:\d+\)$/m.test(l)).join("\n"),
+              "ZodError", e.errors[0].message);
         else if (exitValue !== null)
             console.error(e.stack);  // Since Node will not be able to report about source, we do.
 

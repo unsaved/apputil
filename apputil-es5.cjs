@@ -1,6 +1,8 @@
 "use strict";
-const { validate } = require("@admc.com/bycontract-plus");
 
+const z = require("zod");
+const zxs = require("./zod-extra-schemas.cjs");
+module.exports.zxs = zxs;
 module.exports.AppErr = require("./AppErr.cjs");
 const appErrHandlers = require("./appErrHandlers.cjs");
 for (const key in appErrHandlers) module.exports[key] = appErrHandlers[key];
@@ -33,7 +35,7 @@ module.exports.YMD_RE = /^(\d{4})-([01]\d)-([0-3]\d)$/;
  * @param ms millisecond offset, optional integer
  */
 module.exports.mkDate = (str, h=0, m=0, s=0, ms=0) => {
-    validate([str, h, m, s, ms], ["string", "int", "int", "int", "int"]);
+    z.tuple([z.string(), zxs.int, zxs.int, zxs.int, zxs.int]).parse([str, h, m, s, ms]);
     const ymdEx = module.exports.YMD_RE.exec(str);
     let newDate;
     if (ymdEx) {
@@ -48,7 +50,7 @@ module.exports.mkDate = (str, h=0, m=0, s=0, ms=0) => {
 };
 
 module.exports.plusify = (n, decimals) => {
-    validate([n, decimals], ["number", "int"]);
+    z.tuple([z.number(), zxs.int]).parse([n, decimals]);
     const truncated = Number(n.toFixed(decimals));
     const str = truncated < 0 ? String(truncated) : `+${truncated}`;
     const ex = /[.](\d*)/.exec(str);
@@ -67,7 +69,7 @@ module.exports.plusify = (n, decimals) => {
  * @param ms millisecond offset, optional integer
  */
 module.exports.offsetDate = (date, h=0, m=0, s=0, ms=0) => {
-    validate([date, h, m, s, ms], ["date", "int", "int", "int", "int"]);
+    z.tuple([z.date(), zxs.int, zxs.int, zxs.int, zxs.int]).parse([date, h, m, s, ms]);
     const newDate = new Date(date);
     return h || m || s || ms ?
       new Date(newDate.getTime() + h*60*60*1000 + m*60*1000 + s*1000 + ms) : newDate;

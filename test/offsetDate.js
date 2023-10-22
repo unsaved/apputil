@@ -1,32 +1,33 @@
 import { offsetDate } from "../apputil-es6.mjs";
 import { strict as assert } from 'assert';
+import { ZodError } from "zod";
 
 describe("es6 apputils 'offsetDate' function", () => {
     it("non-date param", () => {
-        assert.throws(() => { offsetDate(null); }, TypeError);
-        assert.throws(() => { offsetDate(null, 1, 2, 3); }, TypeError);
-        assert.throws(() => { offsetDate(null, 1, 2, 3, 4); }, TypeError);
-        assert.throws(() => { offsetDate(1); }, TypeError);
-        assert.throws(() => { offsetDate("str"); }, TypeError);
-        assert.throws(() => { offsetDate(1, 1, 2, 3); }, TypeError);
-        assert.throws(() => { offsetDate(1, 1, 2, 3, 4); }, TypeError);
-        assert.throws(() => { offsetDate("str", 1, 2, 3); }, TypeError);
-        assert.throws(() => { offsetDate("str", 1, 2, 3, 4); }, TypeError);
+        assert.throws(() => { offsetDate(null); }, ZodError);
+        assert.throws(() => { offsetDate(null, 1, 2, 3); }, ZodError);
+        assert.throws(() => { offsetDate(null, 1, 2, 3, 4); }, ZodError);
+        assert.throws(() => { offsetDate(1); }, ZodError);
+        assert.throws(() => { offsetDate("str"); }, ZodError);
+        assert.throws(() => { offsetDate(1, 1, 2, 3); }, ZodError);
+        assert.throws(() => { offsetDate(1, 1, 2, 3, 4); }, ZodError);
+        assert.throws(() => { offsetDate("str", 1, 2, 3); }, ZodError);
+        assert.throws(() => { offsetDate("str", 1, 2, 3, 4); }, ZodError);
     });
     it("non-integer param", () => {
-        assert.throws(() => { offsetDate(); }, TypeError);
-        assert.throws(() => { offsetDate(new Date(), null); }, TypeError);
-        assert.throws(() => { offsetDate(new Date(), 1, null); }, TypeError);
-        assert.throws(() => { offsetDate(new Date(), 1, 2, null); }, TypeError);
-        assert.throws(() => { offsetDate(new Date(), 1, 2, 3, null); }, TypeError);
-        assert.throws(() => { offsetDate(new Date(), "str"); }, TypeError);
-        assert.throws(() => { offsetDate(new Date(), 1, "str"); }, TypeError);
-        assert.throws(() => { offsetDate(new Date(), 1, 2, "str"); }, TypeError);
-        assert.throws(() => { offsetDate(new Date(), 1, 2, 3, "str"); }, TypeError);
-        assert.throws(() => { offsetDate(new Date(), 1.2); }, TypeError);
-        assert.throws(() => { offsetDate(new Date(), 1, 1.2); }, TypeError);
-        assert.throws(() => { offsetDate(new Date(), 1, 2, 1.2); }, TypeError);
-        assert.throws(() => { offsetDate(new Date(), 1, 2, 3, 1.2); }, TypeError);
+        assert.throws(() => { offsetDate(); }, ZodError);
+        assert.throws(() => { offsetDate(new Date(), null); }, ZodError);
+        assert.throws(() => { offsetDate(new Date(), 1, null); }, ZodError);
+        assert.throws(() => { offsetDate(new Date(), 1, 2, null); }, ZodError);
+        assert.throws(() => { offsetDate(new Date(), 1, 2, 3, null); }, ZodError);
+        assert.throws(() => { offsetDate(new Date(), "str"); }, ZodError);
+        assert.throws(() => { offsetDate(new Date(), 1, "str"); }, ZodError);
+        assert.throws(() => { offsetDate(new Date(), 1, 2, "str"); }, ZodError);
+        assert.throws(() => { offsetDate(new Date(), 1, 2, 3, "str"); }, ZodError);
+        assert.throws(() => { offsetDate(new Date(), 1.2); }, ZodError);
+        assert.throws(() => { offsetDate(new Date(), 1, 1.2); }, ZodError);
+        assert.throws(() => { offsetDate(new Date(), 1, 2, 1.2); }, ZodError);
+        assert.throws(() => { offsetDate(new Date(), 1, 2, 3, 1.2); }, ZodError);
     });
     it("clone a Date", () => {
         const newDate = new Date("2023-04-05T01:02:03.345Z");

@@ -6,7 +6,7 @@ const assert = require("node:assert/strict");
 describe("es5 apputils 'JsShell' class", () => {
     it("JsShell", () => {
         assert.doesNotThrow(() =>
-            new JsShell("pseudofile", [{ "label": "whoami?", "cmd": ["whoami"] }],
+            new JsShell("pseudofile", [{ label: "whoami?", cmd: ["whoami"] }],
                 ".", undefined, undefined, process.env)/*.run(true, false, true)*/
         );
     });

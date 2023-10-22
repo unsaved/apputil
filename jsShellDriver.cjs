@@ -4,6 +4,7 @@
 const fs = require("fs");
 const { conciseCatcher, JsShell } = require("./apputil-es5.cjs");
 const z = require("zod");
+const zxs = require("./zod-extra-schemas.cjs");
 
 const yargs = require("yargs")(process.argv.slice(2)).
   strictOptions().
@@ -69,8 +70,8 @@ if ("m" in yargsDict) {
 
 conciseCatcher(function(cmdFiles, cwd, r0, out, err, envMap) {
     z.tuple([z.string().array(), z.string().optional(), z.boolean().optional(),
-      z.boolean().optional(), z.boolean().optional(), z.object({}).optional()]).
-      parse(Array.prototype.slice.call(arguments));
+      z.boolean().optional(), z.boolean().optional(), zxs.plainobject.optional()]).
+      parse(zxs.argsTuplify(arguments, 6));
     const jsShells = cmdFiles.map(cmdFile =>
         new JsShell(cmdFile, JSON.parse(fs.readFileSync(cmdFile, "utf8")),
           cwd, envMap, envMap === undefined ? undefined : true, process.env)

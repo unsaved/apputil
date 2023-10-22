@@ -32,7 +32,6 @@
     "url": "https://github.com/unsaved/apputil.git"
   },
   "dependencies": {
-    "@admc.com/bycontract-plus": "^2.1.1",
     "yargs": "^17.5.1",
     "zod": "^3.22.4"
   },

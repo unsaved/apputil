@@ -1,7 +1,5 @@
-"use strict";
-
-const zxs = require("../zod-extra-schemas.cjs");
-const assert = require("node:assert/strict");
+import zxs from "../zod-extra-schemas.cjs";
+import { strict as assert } from "assert";
 
 describe("es5 extra Zod schemas", () => {
     describe("int", () => {
