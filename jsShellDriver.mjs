@@ -2,9 +2,8 @@
 
 import fs from "fs";
 import yargs from "yargs";
-import { conciseCatcher, JsShell } from "./apputil-es6.mjs";
+import { conciseCatcher, JsShell, zxs } from "./apputil-es6.mjs";
 import z from "zod";
-import zxs from "./zod-extra-schemas.mjs";
 
 const yargsInst = yargs(process.argv.slice(2)).
   strictOptions().

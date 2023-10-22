@@ -2,9 +2,8 @@
 
 "use strict";
 const fs = require("fs");
-const { conciseCatcher, JsShell } = require("./apputil-es5.cjs");
+const { conciseCatcher, JsShell, zxs } = require("./apputil-es5.cjs");
 const z = require("zod");
-const zxs = require("./zod-extra-schemas.cjs");
 const yargs = require("yargs");
 
 const yargsInst = yargs(process.argv.slice(2)).
