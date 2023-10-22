@@ -11,7 +11,7 @@ import zxs from "./zod-extra-schemas.mjs";
  */
 export function conciseCatcher(wrappedFn, exitValue) {
     z.tuple([z.function(), zxs.posint.nullish()]).parse(zxs.argsTuplify(arguments, 2));
-    const errHandler = module.exports.mkConciseErrorHandler(exitValue);
+    const errHandler = mkConciseErrorHandler(exitValue);
     return function() {
         try {
             return wrappedFn.apply(null, arguments);

@@ -6,7 +6,7 @@ import { conciseCatcher, JsShell } from "./apputil-es6.mjs";
 import z from "zod";
 import zxs from "./zod-extra-schemas.mjs";
 
-const yargsDict = yargs(process.argv.slice(2)).
+const yargsInst = yargs(process.argv.slice(2)).
   strictOptions().
   usage(`SYNTAX: $0 [-dEhOqvz] [-m name=val] [-f folder] -- cmds.json...
 Command files are JSON of lists of objects with these elements:
@@ -49,7 +49,8 @@ Command files are JSON of lists of objects with these elements:
   }).
   alias("help", "h").
   demandCommand(1).
-  version().argv;
+  version();
+const yargsDict = yargsInst.argv;
 const progName = yargsDict.$0.replace(/^.*[\\/]/, "");  // eslint-disable-line no-unused-vars
 console.warn("progName", progName);
 
@@ -61,7 +62,7 @@ if ("m" in yargsDict) {
     const ex = /^(\w+)=(.+)$/.exec(yargsDict.m);
     if (!ex) {
         console.error("-m value must be of format NAME=VALUE.  Maybe you need quotes.");
-        yargs.showHelp();
+        yargsInst.showHelp();
         process.exit(9);
     }
     eMap[ex[1]] = ex[2];
