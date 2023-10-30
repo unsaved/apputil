@@ -15,8 +15,10 @@ thingsToExport.argsTuplify = (args, maxLen) => {
 thingsToExport.int = z.number().int();
 thingsToExport.posint = z.number().int().positive();
 thingsToExport.nonnegint = z.number().int().nonnegative();
-thingsToExport.positive = z.number().positive();
+thingsToExport.pos = thingsToExport.positive = z.number().positive();
 thingsToExport.nonneg = z.number().nonnegative();
+thingsToExport.nonpos = z.number().nonpositive();
+thingsToExport.regex = z.string().regex;
 // Fixed because OOTB does not detect oversized components.
 // These are accepted valid by Zod:  2023-13-42T25:73:74Z  2023-00-00T25:73:74Z
 thingsToExport.isotimestr = z.string().datetime({offset: true}).refine(s => {

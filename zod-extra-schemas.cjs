@@ -16,8 +16,10 @@ module.exports.argsTuplify = (args, maxLen) => {
 module.exports.int = z.number().int();
 module.exports.posint = z.number().int().positive();
 module.exports.nonnegint = z.number().int().nonnegative();
-module.exports.positive = z.number().positive();
+module.exports.pos = module.exports.positive = z.number().positive();
 module.exports.nonneg = z.number().nonnegative();
+module.exports.nonpos = z.number().nonpositive();
+module.exports.regex = z.string().regex;
 // Fixed because OOTB does not detect oversized components.
 // These are accepted valid by Zod:  2023-13-42T25:73:74Z  2023-00-00T25:73:74Z
 module.exports.isotimestr = z.string().datetime({offset: true}).refine(s => {
