@@ -1,4 +1,4 @@
-import zxs from "../zod-extra-schemas.cjs";
+import { zxs } from "../apputil-es6.mjs";
 import { strict as assert } from "assert";
 
 describe("es5 extra Zod schemas", () => {

@@ -1,6 +1,6 @@
 "use strict";
 
-const zxs = require("../zod-extra-schemas.cjs");
+const { zxs } = require("../apputil-es5.cjs");
 const assert = require("node:assert/strict");
 
 describe("es5 extra Zod schemas", () => {
