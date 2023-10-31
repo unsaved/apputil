@@ -79,6 +79,9 @@
   },
   "overrides": [
     {
+      "files": ["*deno.js", "*deno*/*.js"],
+      "globals": { "Deno": "readonly" }
+    }, {
       "files": ["**/*.cjs"],
       "parserOptions": { "ecmaVersion": "latest", "sourceType": "script" }
     }, {

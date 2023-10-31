@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "lint": "eslint",
-    "lint-all": "eslint *.[cm]js test/*.[cm]js test/*.js",
+    "lint-all": "eslint *.[cm]js test/*.[cm]js test/*.js denotest/*.js",
     "lintHtml": "eslint -f html -o local/eslint.html",
     "test": "mocha",
     "unixJsShell": "node jsShellDriver.mjs -q testdata/cmdUnix.json",

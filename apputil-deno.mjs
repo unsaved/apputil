@@ -13,17 +13,18 @@ export const NetRC = NetRCRef;
 export const JsShell = JsShellRef;
 import fs from "fs";
 import path from "path";
-import z from "zod";
-import zxsRef from "./zod-extra-schemas.mjs";
-export const zxs = zxsRef;
 */
 import { z } from "https://deno.land/x/zod/mod.ts";
+import zxsRef from "./deno/zod-extra-schemas.js";
+export const zxs = zxsRef;
 
+/*
 export const getAppVersion = dirName => {
     if (typeof dirName !== "string")
         throw new Error("getAppVersion must be called like: getAppVersion(__dirname)");
     return JSON.parse(fs.readFileSync(path.join(dirName, "package.json"))).version;
 };
+*/
 export const isPlainObject = val =>
   typeof val === "object" && val !== null &&
     Object.getPrototypeOf(val) === Object.getPrototypeOf({});
