@@ -10,10 +10,6 @@ const REF_RE = /[$]{([^}]+)}/g;
  * recall, aliases, background process control, terminal control,
  * env var manipulation.
  *
- * The Deno implementation of this class suffers from poor Deno.Command design.
- * It's impossible to detect in invalid invocaton (like missing cmd or insufficient
- * privileges) vs. valid invocation with non-0 exit status.
- *
  * @param inheritEnv true means to add the provided env entries (if any) to the current
  *        process.env.  If unset or false then the new process will only have the variables
  *        explicitly added by you plus those which may be added by the OS.
