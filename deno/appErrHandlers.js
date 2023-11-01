@@ -1,5 +1,5 @@
 import AppErr from "./AppErr.js";
-import z from "zod";
+import { z } from "https://deno.land/x/zod/mod.ts";
 import zxs from "./zod-extra-schemas.js";
 
 /**
