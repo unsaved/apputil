@@ -12,16 +12,16 @@ Since version 4.1.0 supports deno.
 
 Load some subset of these functions
 
-* AppErr
-* conciseCatcher
+* AppErr  An Error type for facilitating concise error reporting
+* conciseCatcher  Function wrapper to succinctly report on expected errors
 * isPlainObject
-* JsShell
-* mkConciseErrorHandler
-* mkDate
-* NetRC
-* offsetDate
-* plusify
-* zxs
+* JsShell  A powerful system for executing a batch of commands (command-line driver provided)
+* mkConciseErrorHandler  Succinct error reporting for use in catch blocks and by conciseCatcher
+* mkDate  Create Date objects for days with local midnight time, with optional convenient offsets
+* NetRC  Load .netrc entries.
+* offsetDate  Conveniently generate a new Date with specified offsets from the provided date
+* plusify  Prefix number strings with a + prefix for positives (with Deno sprintf is more general).
+* zxs  Several additional schemas for Zod
 
 like so:
 ```javascript
