@@ -26,8 +26,12 @@ Load some subset of these functions
 like so:
 ```javascript
 const { AppErr, conciseCatcher, conciseErrorHandler } = require("@admc.com/apputil");
+```
 OR
+```javascript
 import { AppErr, conciseCatcher, conciseErrorHandler} from "@admc.com/apputil";
+```
 OR
+```javascript
 import { AppErr, conciseCatcher, conciseErrorHandler} from "https://deno.land/x/apputil/apputil-deno.mjs";
 ```
