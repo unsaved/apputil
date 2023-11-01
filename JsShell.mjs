@@ -11,21 +11,19 @@ const REF_RE = /[$]{([^}]+)}/g;
  * recall, aliases, background process control, terminal control,
  * env var manipulation.
  *
- * @param envAdd true means to add the procided env entires to the current
- *        process.env.  If you provide env with anvAdd unset or false,
- *        then the provided map will completely replace the current env.
+ * @param inheritEnv true means to add the provided env entries (if any) to the current
+ *        process.env.  If unset or false then the new process will only have the variables
+ *        explicitly added by you plus those which may be added by the OS.
  */
 export default class JsShell {
-    constructor(id, config, defaultCwd, env, envAdd, substMap) {
+    constructor(id, config, defaultCwd, env={}, inheritEnv=false, substMap) {
         z.tuple([z.string(), zxs.plainobject.array(),
           z.string().optional(), zxs.plainobject.optional(), z.boolean().optional(),
           // this was object instead of plainobject before ported from bycontract.  Mistake?
           z.object({}).optional()]).
           parse(zxs.argsTuplify(arguments, 6));
         this.id = id;
-        if (envAdd !== undefined && env === undefined)
-            throw new AppErr("Config record specifies 'envAdd' but gives no 'env' map");
-        if (env !== undefined) for (const key in env)
+        for (const key in env)
             z.string({
                 required_error: s => `Env var '${s}' value not set`,
                 invalid_type_error: s => `Env var '${s}' value not a string ${env[key]}`,
@@ -33,7 +31,8 @@ export default class JsShell {
         if (substMap !== undefined) for (const key in substMap)
             z.string({
                 required_error: s => `substMap var '${s}' value not set`,
-                invalid_type_error: s => `substMap var '${s}' value not a string ${env[key]}`,
+                invalid_type_error:
+                  s => `substMap var '${s}' value not a string ${substMap[key]}`,
             }).parse(substMap[key]);
         config.forEach((rec, i) => {
             z.object({cmd: z.string().array()}).parse(rec);
@@ -64,7 +63,8 @@ export default class JsShell {
         });
         this.substMap = substMap;
         this.config = config;
-        this.env = envAdd ? {...process.env, ...env} : env;
+        this.env = env;
+        this.inheritEnv = inheritEnv;
         this.dfltCwd = defaultCwd;
     }
 
@@ -77,7 +77,7 @@ export default class JsShell {
      * exit value stage).
      *
      * I recommend that callers nullify console.debug unless debugging.
-     * To run quietly, nullify console.info, as is done with -q swith
+     * To run quietly, nullify console.info, as is done with -q switch
      * of jsShellDriver.js.
      */
     run(dfltRequire0=false, dfltStdout=true, dfltStderr=true) {
@@ -99,14 +99,13 @@ export default class JsShell {
                 stdErr ? "inherit" : "pipe",
               ],
               windowsVerbatimArguments: true,  // ignored on UNIX
+              env: this.inheritEnv ? {...process.env, ...this.env} : this.env,
               //windowsHide: true,  // TODO: TEST THIS OUT for terminal and graphical programs
             };
             const condFn = "condition" in rec ?  // eslint-disable-next-line no-eval
                 function() { return eval(rec.condition); } : undefined;
             if (cwd !== undefined) opts.cwd = cwd;
-            if (this.env !== undefined) opts.env = this.env;
             // maxBuffer?
-
 
             const allArgs = this.substMap === undefined ? rec.cmd.slice() :
               rec.cmd.map(arg =>

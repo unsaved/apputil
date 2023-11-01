@@ -1,24 +1,20 @@
 import AppErrRef from "./deno/AppErr.js";
-/*
 import { conciseCatcher as conciseCatcherRef, mkConciseErrorHandler as mkConciseErrorHandlerRef }
-    from "./appErrHandlers.mjs";
-import NetRCRef from "./NetRC.mjs";
-import JsShellRef from "./JsShell.mjs";
-*/
+    from "./deno/appErrHandlers.js";
+import NetRCRef from "./deno/NetRC.js";
+import JsShellRef from "./deno/JsShell.js";
 export const AppErr = AppErrRef;
-/*
 export const conciseCatcher = conciseCatcherRef;
 export const mkConciseErrorHandler = mkConciseErrorHandlerRef;
 export const NetRC = NetRCRef;
 export const JsShell = JsShellRef;
-import fs from "fs";
-import path from "path";
-*/
 import { z } from "https://deno.land/x/zod/mod.ts";
 import zxsRef from "./deno/zod-extra-schemas.js";
 export const zxs = zxsRef;
 
-/*
+/*  No longer necessary because yargs version() function now does this natively:
+import fs from "fs";
+import path from "path";
 export const getAppVersion = dirName => {
     if (typeof dirName !== "string")
         throw new Error("getAppVersion must be called like: getAppVersion(__dirname)");

@@ -1,0 +1,14 @@
+[
+  { "label": "whoami?", "cmd": ["whoami"] },
+  { "cmd": ["echo", "(${HOME})"] },
+  {
+    "label": "Windows-only",
+    "cmd": ["echo", "Now on Windows"],
+    "condition": "Deno.uid() === null"
+  },
+  {
+    "label": "Non-Windows-only",
+    "cmd": ["echo", "Now on Non-Windows"],
+    "condition": "Deno.uid() !== null"
+  }
+]

@@ -1,10 +1,7 @@
-"use strict";
-
-const childProcess = require("child_process");
-const AppErr = require("./AppErr.cjs");
-const util = require("util");
-const z = require("zod");
-const zxs = require("./zod-extra-schemas.cjs");
+import AppErr from "./AppErr.js";
+import { z } from "https://deno.land/x/zod/mod.ts";
+import zxs from "./zod-extra-schemas.js";
+import { sprintf } from "https://deno.land/std@0.204.0/fmt/printf.ts";
 
 const REF_RE = /[$]{([^}]+)}/g;
 
@@ -13,11 +10,15 @@ const REF_RE = /[$]{([^}]+)}/g;
  * recall, aliases, background process control, terminal control,
  * env var manipulation.
  *
+ * The Deno implementation of this class suffers from poor Deno.Command design.
+ * It's impossible to detect in invalid invocaton (like missing cmd or insufficient
+ * privileges) vs. valid invocation with non-0 exit status.
+ *
  * @param inheritEnv true means to add the provided env entries (if any) to the current
  *        process.env.  If unset or false then the new process will only have the variables
  *        explicitly added by you plus those which may be added by the OS.
  */
-module.exports = class JsShell {
+export default class JsShell {
     constructor(id, config, defaultCwd, env={}, inheritEnv=false, substMap) {
         z.tuple([z.string(), zxs.plainobject.array(),
           z.string().optional(), zxs.plainobject.optional(), z.boolean().optional(),
@@ -89,19 +90,28 @@ module.exports = class JsShell {
         const substMapRef = this.substMap;
         const startMs = new Date().valueOf();
         const configCount = this.config.length;
+        const decoder = new TextDecoder();
         this.config.forEach((rec, i) => {
+            let cmdStatus;
+            const allArgs = this.substMap === undefined ? rec.cmd.slice() :
+              rec.cmd.map(arg =>
+                substMapRef === undefined ? arg : arg.replace(REF_RE, refReplacement)
+              );
+            const args = allArgs.slice();
+            const cmd = args.shift();
             const stdOut = "stdout" in rec ? rec.stdout : dfltStdout;
             const stdErr = "stderr" in rec ? rec.stderr : dfltStderr;
             const cwd = "cwd" in rec ? rec.cwd : this.dfltCwd;
             const require0 = "require0" in rec ? rec.require0 : dfltRequire0;
             const opts = {
-              stdio: [
-                rec.interactive ? "inherit" : "ignore",
-                stdOut ? "inherit" : "pipe",
-                stdErr ? "inherit" : "pipe",
-              ],
-              windowsVerbatimArguments: true,  // ignored on UNIX
-              env: this.inheritEnv ? {...process.env, ...this.env} : this.env,
+              args,
+              stdin: rec.interactive ? "inherit" : "null",
+              stdout: stdOut ? "inherit" : "piped",
+              stderr: stdErr ? "inherit" : "piped",
+              windowsRawArguments: true,  // ignored on UNIX
+              //windowsHide: true,  // TODO: TEST THIS OUT for terminal and graphical programs
+              env: this.env,
+              clearEnv: !this.inheritEnv,
               //windowsHide: true,  // TODO: TEST THIS OUT for terminal and graphical programs
             };
             const condFn = "condition" in rec ?  // eslint-disable-next-line no-eval
@@ -109,25 +119,18 @@ module.exports = class JsShell {
             if (cwd !== undefined) opts.cwd = cwd;
             // maxBuffer?
 
-            const allArgs = this.substMap === undefined ? rec.cmd.slice() :
-              rec.cmd.map(arg =>
-                substMapRef === undefined ? arg : arg.replace(REF_RE, refReplacement)
-              );
-            const args = allArgs.slice();
-            const cmd = args.shift();
             const label = rec.label === undefined ? undefined :
               this.substMap === undefined ? rec.label :
               rec.label.replace(REF_RE, refReplacement);
 
             console.info(`[#${i+1}/${configCount} ${label ? label : allArgs}]`);
-            console.debug(util.formatWithOptions({colors: true, depth: 0},
-              "[with options %O]", opts));
+            console.debug("with options", opts);
             if (condFn !== undefined) {
                 let condReturn;
                 try {
                     condReturn = condFn();
                 } catch (ie) {
-                    throw new AppErr("condition execution threw", ie.message);
+                    throw new AppErr(`condition execution threw ${ie.message}`);
                 }
                 if (typeof condReturn !== "boolean")
                     throw new AppErr("condition expression returned a "
@@ -138,39 +141,42 @@ module.exports = class JsShell {
                     return;
                 }
             }
-            const pObj = childProcess.spawnSync(cmd, args, opts);
-            if ("error" in pObj) {
+            try {
+                // Empiricall this returns a emrge of Deno.CommandStatus + Deno.CommandOutput
+                // even though the Deno docs says that it returns a Deno.CommandOutput.
+                cmdStatus = new Deno.Command(cmd, opts).outputSync();
+            } catch (cmdE) {
                 if (label)
-                    throw new AppErr("Command #%i/%i '%s' failed.\n%s\n%O",
-                      i+1, configCount, label, allArgs, pObj.error);
-                throw new AppErr("Command #%i/%i [%s] failed.\n%O",
-                  i+1, configCount, allArgs, pObj.error);
+                    throw new AppErr("Command #%i/%i '%s' failed.\n%s\n%s",
+                      i+1, configCount, label, allArgs, String(cmdE));
+                throw new AppErr("Command #%i/%i [%s] failed.\n%s",
+                  i+1, configCount, String(allArgs), String(cmdE));
             }
-            if (pObj.signal !== null) {
+            if (cmdStatus.signal !== null) {
                 if (label)
                     throw new AppErr("Command #%i/%i '%s' terminated by signal %s\n%s",
-                      i+1, configCount, label, pObj.signal, allArgs);
+                      i+1, configCount, label, cmdStatus.signal, allArgs);
                 throw new AppErr("Command #%i/%i [%s] terminated by signal %s",
-                  i+1, configCount, allArgs, pObj.signal);
+                  i+1, configCount, String(allArgs), cmdStatus.signal);
             }
-            if (require0 && pObj.status !== 0) {
+            if (require0 && !cmdStatus.success) {
           /* eslint-disable no-multi-spaces, no-extra-parens, keyword-spacing, prefer-template */
                 if (label)
                     throw new AppErr(
-                      util.format("Command #%i/%i '%s' exited with value %i\n%s",
-                      i+1, configCount, label, pObj.status, allArgs)
+                      sprintf("Command #%i/%i '%s' exited with value %i\n%s",
+                      i+1, configCount, label, cmdStatus.code, String(allArgs))
                       + (stdOut ? "" : ( "\nSTDOUT: ####################################\n"
-                      +  pObj.stdout.toString("utf8")))
+                      +  decoder.decode(cmdStatus.stdout)))
                       + (stdErr ? "" : ( "\nSTDERR: ####################################\n"
-                      +  pObj.stderr.toString("utf8")))
+                      +  decoder.decode(cmdStatus.stderr)))
                     );
                 throw new AppErr(
-                  util.format("Command #%i/%i [%s] exited with value %i",
-                  i+1, configCount, allArgs, pObj.status)
+                  sprintf("Command #%i/%i [%s] exited with value %i",
+                  i+1, configCount, String(allArgs), cmdStatus.code)
                   + (stdOut ? "" : ( "\nSTDOUT: ####################################\n"
-                  +  pObj.stdout.toString("utf8")))
+                  +  decoder.decode(cmdStatus.stdout)))
                   + (stdErr ? "" : ( "\nSTDERR: ####################################\n"
-                  +  pObj.stderr.toString("utf8")))
+                  +  decoder.decode(cmdStatus.stderr)))
                 );
           /* eslint-enable no-multi-spaces, no-extra-parens, keyword-spacing, prefer-template */
             }
@@ -185,4 +191,4 @@ module.exports = class JsShell {
             return substMapRef[p1];
         }
     }
-};
+}

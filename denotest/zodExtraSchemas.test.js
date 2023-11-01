@@ -1,7 +1,7 @@
 import { zxs } from "../apputil-deno.mjs";
 import { assert } from "https://deno.land/std@0.204.0/assert/mod.ts";
 
-Deno.test("es5 extra Zod schemas / int", async t => {
+Deno.test("extra Zod schemas / int", async t => {
     await t.step("good data", async () => {
         assert(zxs.int.safeParse(3).success, "positive");
         assert(zxs.int.safeParse(-3).success, "negative");
@@ -18,7 +18,7 @@ Deno.test("es5 extra Zod schemas / int", async t => {
         assert(!zxs.int.safeParse(Math.PI).success, "non-int");
     });
 });
-Deno.test("es5 extra Zod schemas / posint", async t => {
+Deno.test("extra Zod schemas / posint", async t => {
     await t.step("good data", async () => {
         assert(zxs.posint.safeParse(3).success, "simple");
         assert(zxs.posint.optional().safeParse(3).success, "simple w/optional");
@@ -35,7 +35,7 @@ Deno.test("es5 extra Zod schemas / posint", async t => {
         assert(!zxs.posint.safeParse(Math.PI).success, "non-int");
     });
 });
-Deno.test("es5 extra Zod schemas / nonnegint", async t => {
+Deno.test("extra Zod schemas / nonnegint", async t => {
     await t.step("good data", async () => {
         assert(zxs.nonnegint.safeParse(3).success, "simple");
         assert(zxs.nonnegint.optional().safeParse(3).success, "simple w/optional");
@@ -52,7 +52,7 @@ Deno.test("es5 extra Zod schemas / nonnegint", async t => {
         assert(!zxs.nonnegint.safeParse(Math.PI).success, "non-int");
     });
 });
-Deno.test("es5 extra Zod schemas / pos", async t => {
+Deno.test("extra Zod schemas / pos", async t => {
     await t.step("good data", async () => {
         assert(zxs.positive.safeParse(3).success, "simple");
         assert(zxs.positive.optional().safeParse(3).success, "simple w/optional");
@@ -69,7 +69,7 @@ Deno.test("es5 extra Zod schemas / pos", async t => {
         assert(!zxs.positive.safeParse(0.00).success, "zero non-int");  // converts
     });
 });
-Deno.test("es5 extra Zod schemas / nonneg", async t => {
+Deno.test("extra Zod schemas / nonneg", async t => {
     await t.step("good data", async () => {
         assert(zxs.nonneg.safeParse(3).success, "simple");
         assert(zxs.nonneg.optional().safeParse(3).success, "simple w/optional");
@@ -86,7 +86,7 @@ Deno.test("es5 extra Zod schemas / nonneg", async t => {
         assert(!zxs.nonneg.safeParse(-3).success, "negative");
     });
 });
-Deno.test("es5 extra Zod schemas / strictdatestr", async t => {
+Deno.test("extra Zod schemas / strictdatestr", async t => {
     await t.step("good data", async () => {
         assert(zxs.strictdatestr.safeParse("2021-12-30").success, "simple");
         assert(zxs.strictdatestr.optional().safeParse("2021-12-30").success, "simple w/optional");
@@ -104,7 +104,7 @@ Deno.test("es5 extra Zod schemas / strictdatestr", async t => {
         assert(!zxs.strictdatestr.safeParse("2021-02-03Z").success, "trailing char");
     });
 });
-Deno.test("es5 extra Zod schemas / datestr", async t => {
+Deno.test("extra Zod schemas / datestr", async t => {
     await t.step("good data", async () => {
         assert(zxs.datestr.safeParse("2021-12-30").success, "simple");
         assert(zxs.datestr.optional().safeParse("2021-12-30").success, "simple w/optional");
@@ -123,7 +123,7 @@ Deno.test("es5 extra Zod schemas / datestr", async t => {
         assert(!zxs.datestr.safeParse("2021/12/30").success, "wrong delimiter");
     });
 });
-Deno.test("es5 extra Zod schemas / slashydatestr", async t => {
+Deno.test("extra Zod schemas / slashydatestr", async t => {
     await t.step("good data", async () => {
         assert(zxs.slashydatestr.safeParse("2021/12/30").success, "simple");
         assert(zxs.slashydatestr.optional().safeParse("2021/12/30").success, "simple w/optional");
@@ -142,7 +142,7 @@ Deno.test("es5 extra Zod schemas / slashydatestr", async t => {
         assert(!zxs.slashydatestr.safeParse("2021-12-30").success, "wrong delimiter");
     });
 });
-Deno.test("es5 extra Zod schemas / plainobject", async t => {
+Deno.test("extra Zod schemas / plainobject", async t => {
     await t.step("good data", async () => {
         assert(zxs.plainobject.safeParse({}).success, "empty obj");
         assert(zxs.plainobject.safeParse({alpha: 1}).success, "simple obj");
@@ -164,7 +164,7 @@ Deno.test("es5 extra Zod schemas / plainobject", async t => {
         assert(!zxs.plainobject.safeParse([1, 2]).success, "populated array");
     });
 });
-Deno.test("es5 extra Zod schemas / isotimestr", async t => {
+Deno.test("extra Zod schemas / isotimestr", async t => {
     await t.step("bad data", async () => {
         assert(!zxs.isotimestr.safeParse(3).success, "non-string");
         assert(!zxs.isotimestr.safeParse(null).success, "null");
@@ -217,7 +217,7 @@ Deno.test("es5 extra Zod schemas / isotimestr", async t => {
         assert(zxs.isotimestr.safeParse("2021-12-13T23:24:25-04:00").success, "+/- zone offset/B");
     });
 });
-Deno.test("es5 extra Zod schemas / isotimestr_s", async t => {
+Deno.test("extra Zod schemas / isotimestr_s", async t => {
     await t.step("bad data", async () => {
         assert(!zxs.isotimestr_s.safeParse(3).success, "non-string");
         assert(!zxs.isotimestr_s.safeParse(null).success, "null");
