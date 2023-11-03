@@ -32,23 +32,23 @@ describe("es6 apputils 'offsetDate' function", () => {
     it("clone a Date", () => {
         const newDate = new Date("2023-04-05T01:02:03.345Z");
         const cloneDate = offsetDate(newDate);
-        assert.equal(newDate.getTime(), cloneDate.getTime());
+        assert.equal(cloneDate.getTime(), newDate.getTime());
     });
     it("positive offsets", () => {
         const newDate = new Date("2023-04-05T01:02:03.345Z");
         const adjDate = offsetDate(newDate, 20, 30, 40, 50);
-        assert.equal(newDate.getTime() + 20*60*60*1000 + 30*60*1000 + 40*1000 + 50,
-          adjDate.getTime());
+        assert.equal(adjDate.getTime(),
+          newDate.getTime() + 20*60*60*1000 + 30*60*1000 + 40*1000 + 50);
     });
     it("negative offsets", () => {
         const newDate = new Date("2023-04-05T01:02:03.345Z");
         const adjDate = offsetDate(newDate, -20, -30, -40, -50);
-        assert.equal(newDate.getTime() - 20*60*60*1000 - 30*60*1000 - 40*1000 - 50,
-          adjDate.getTime());
+        assert.equal(adjDate.getTime(),
+          newDate.getTime() - 20*60*60*1000 - 30*60*1000 - 40*1000 - 50);
     });
     it("offset mix", () => {
         const newDate = new Date("2023-04-05T01:02:03.345Z");
         const adjDate = offsetDate(newDate, 20, undefined, -40);
-        assert.equal(newDate.getTime() + 20*60*60*1000 - 40*1000, adjDate.getTime());
+        assert.equal(adjDate.getTime(), newDate.getTime() + 20*60*60*1000 - 40*1000);
     });
 });

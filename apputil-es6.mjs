@@ -29,8 +29,11 @@ export const YMD_RE = /^(\d{4})-([01]\d)-([0-3]\d)$/;
  * Generate a Date from a string, and IF the string is a proper date in strict format
  * (see @param below) then set time to local midnight of that day.
  *
- * OOTB when you instantiate a Date without specifying a time you get a midnig UTC time.
- * (In some contexts you may get a date/time midnight of the NEXT day!)
+ * OOTB when you instantiate a Date with local date string (no time) you get a midnight UTC time
+ * rather than a midnight local time and this can change the date too.
+ * For example in EDT 'new Date("2023-01-02")' will give you:
+ *   getDate() === 1; getHours() === 19
+ *   getUTCDate() === 2; getUTCHours() === 0
  *
  * @param str string, either yyyy-mm-dd (with special local-midnight-handling) or
  *        any other string accepted by the native Date constructor.

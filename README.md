@@ -15,7 +15,7 @@ Load some subset of these functions
 * AppErr  An Error type for facilitating concise error reporting
 * conciseCatcher  Function wrapper to succinctly report on expected errors
 * isPlainObject
-* JsShell  A powerful system for executing a batch of commands (command-line driver provided)
+* JsShell  A powerful system for executing a batch of commands (command-line drivers jsShellDriver.* provided)
 * mkConciseErrorHandler  Succinct error reporting for use in catch blocks and by conciseCatcher
 * mkDate  Create Date objects for days with local midnight time, with optional convenient offsets
 * NetRC  Load .netrc entries.

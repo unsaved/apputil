@@ -5,7 +5,8 @@
   "main": "apputil-es6.mjs",
   "bin": {
     "jsShellDriver.mjs": "jsShellDriver.mjs",
-    "jsShellDriver.cjs": "jsShellDriver.cjs"
+    "jsShellDriver.cjs": "jsShellDriver.cjs",
+    "jsShellDriver.js": "deno/jsShellDriver.js"
   },
   "exports": [
     {

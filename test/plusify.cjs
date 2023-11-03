@@ -10,9 +10,9 @@ describe("es5 apputils 'plusify' function", () => {
         assert.throws(() => { plusify(3, 4.5); }, ZodError);
     });
     it("padding and preserving -", () => {
-        assert.strictEqual("-1.200", plusify(-1.2, 3));
+        assert.strictEqual(plusify(-1.2, 3), "-1.200");
     });
     it("rounding and adding +", () => {
-        assert.strictEqual("+3.1416", plusify(Math.PI, 4));
+        assert.strictEqual(plusify(Math.PI, 4), "+3.1416");
     });
 });
