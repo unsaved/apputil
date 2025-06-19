@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@admc.com/apputil": "^2.5.0",
-    "yargs": "^17.5.1",
+    "yargs": "^18.0.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
