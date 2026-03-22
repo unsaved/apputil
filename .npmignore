@@ -10,3 +10,12 @@ local/
 /node_modules
 /claudeThreadNames.txt
 .claude/
+.claudeignore
+CLAUDE.md
+doc/
+test/
+testdata/
+denotest/
+.eslintrc.json
+.gitignore
+.gitattributes
