@@ -1,11 +1,9 @@
 import AppErrRef from "./AppErr.mjs";
-import { conciseCatcher as conciseCatcherRef, mkConciseErrorHandler as mkConciseErrorHandlerRef }
-    from "./appErrHandlers.mjs";
+import { mkAppThrowableHandler as mkAppThrowableHandlerRef } from "./appErrHandlers.mjs";
 import NetRCRef from "./NetRC.mjs";
 import JsShellRef from "./JsShell.mjs";
 export const AppErr = AppErrRef;
-export const conciseCatcher = conciseCatcherRef;
-export const mkConciseErrorHandler = mkConciseErrorHandlerRef;
+export const mkAppThrowableHandler = mkAppThrowableHandlerRef;
 export const NetRC = NetRCRef;
 export const JsShell = JsShellRef;
 import fs from "fs";

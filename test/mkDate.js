@@ -12,7 +12,7 @@ describe("es6 apputils 'mkDate' function", () => {
         assert.ok(newDate instanceof Date);
         assert.equal(1, newDate.getUTCHours(), 1);
         assert.equal(2, newDate.getUTCMinutes(), 2);
-        assert.equal(3, newDate.getUTCSeconds()), 3;
+        assert.equal(3, newDate.getUTCSeconds(), 3);
         assert.equal(345, newDate.getUTCMilliseconds(), 345);
     });
     it("generate a default Date with offset", () => {

@@ -1,11 +1,9 @@
 import AppErrRef from "./deno/AppErr.js";
-import { conciseCatcher as conciseCatcherRef, mkConciseErrorHandler as mkConciseErrorHandlerRef }
-    from "./deno/appErrHandlers.js";
+import { mkAppThrowableHandler as mkAppThrowableHandlerRef } from "./deno/appErrHandlers.js";
 import NetRCRef from "./deno/NetRC.js";
 import JsShellRef from "./deno/JsShell.js";
 export const AppErr = AppErrRef;
-export const conciseCatcher = conciseCatcherRef;
-export const mkConciseErrorHandler = mkConciseErrorHandlerRef;
+export const mkAppThrowableHandler = mkAppThrowableHandlerRef;
 export const NetRC = NetRCRef;
 export const JsShell = JsShellRef;
 import { z } from "https://deno.land/x/zod/mod.ts";

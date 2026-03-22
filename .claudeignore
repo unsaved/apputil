@@ -1,0 +1,8 @@
+/tmp/
+/local-jsapi.d/
+/charts/
+/tstdb/
+/data/
+/node_modules
+/.git/
+*.log
